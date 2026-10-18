@@ -1,0 +1,3554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#070a08">
+  <title>OPHIARIUM // Serpent Syndicate Tycoon</title>
+  <style>
+    /* CSS RESET & MODERN CYBER-HERPETOLOGY DESIGN SYSTEM */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --bg-void: #060907;
+      --bg-obsidian: #0b110e;
+      --bg-surface: #101a15;
+      --bg-card: #14221b;
+      --bg-card-hover: #192c23;
+      --border-dark: #1e3328;
+      --border-glow: rgba(16, 185, 129, 0.25);
+      --venom-emerald: #10b981;
+      --venom-emerald-glow: rgba(16, 185, 129, 0.35);
+      --viper-gold: #f59e0b;
+      --viper-gold-glow: rgba(245, 158, 11, 0.35);
+      --toxin-crimson: #ef4444;
+      --toxin-crimson-glow: rgba(239, 68, 68, 0.35);
+      --cyber-cyan: #06b6d4;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    body {
+      background-color: var(--bg-void);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      padding-top: var(--safe-top);
+      padding-bottom: calc(var(--safe-bottom) + 24px);
+      -webkit-font-smoothing: antialiased;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+
+    .mono { font-family: var(--font-mono); }
+    h1, h2, h3, h4, .stat-num { font-family: var(--font-mono); letter-spacing: -0.02em; }
+
+    /* SAFE TOUCH INPUTS (NO MOBILE SAFARI AUTO-ZOOM) */
+    input, select, textarea, button {
+      font-size: 16px !important;
+      font-family: inherit;
+      color: inherit;
+      outline: none;
+      border: 1px solid var(--border-dark);
+      border-radius: 8px;
+      touch-action: manipulation;
+    }
+
+    /* TOP HEADER & TOP NAVIGATION DOCK */
+    header {
+      background: var(--bg-obsidian);
+      border-bottom: 1px solid var(--border-dark);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 16px;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #10b981, #064e3b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 20px;
+      box-shadow: 0 0 14px var(--venom-emerald-glow);
+      border: 1px solid #34d399;
+    }
+
+    .brand-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .brand-subtitle {
+      font-size: 10px;
+      color: var(--venom-emerald);
+      letter-spacing: 0.16em;
+      font-family: var(--font-mono);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* STATUS TICKER */
+    .ticker-ribbon {
+      background: #080d0a;
+      border-top: 1px solid #14221a;
+      border-bottom: 1px solid #14221a;
+      display: flex;
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 6px 16px;
+      gap: 12px;
+      scrollbar-width: none;
+    }
+    .ticker-ribbon::-webkit-scrollbar { display: none; }
+
+    .ticker-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-family: var(--font-mono);
+      background: rgba(18, 28, 23, 0.8);
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border-dark);
+    }
+
+    /* TOP NAVIGATION TABS (JUST UNDER TOP HUD) */
+    nav.top-tab-nav {
+      background: #0d1511;
+      display: flex;
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 6px 12px;
+      gap: 6px;
+      border-bottom: 1px solid var(--border-dark);
+      scrollbar-width: none;
+    }
+    nav.top-tab-nav::-webkit-scrollbar { display: none; }
+
+    .top-nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 13px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: var(--font-sans);
+    }
+    .top-nav-btn svg { width: 15px; height: 15px; fill: currentColor; }
+    .top-nav-btn:hover {
+      background: rgba(255, 255, 255, 0.04);
+      color: #fff;
+    }
+    .top-nav-btn.active {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: var(--venom-emerald);
+      color: var(--venom-emerald);
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+    }
+
+    /* BUTTONS */
+    .btn {
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.12s ease;
+      background: var(--bg-card);
+      border: 1px solid var(--border-dark);
+      color: var(--text-primary);
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-emerald {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #022c22;
+      border-color: #34d399;
+      box-shadow: 0 0 12px var(--venom-emerald-glow);
+    }
+    .btn-gold {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #451a03;
+      border-color: #fbbf24;
+      box-shadow: 0 0 12px var(--viper-gold-glow);
+    }
+    .btn-crimson {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: #fff;
+      border-color: #f87171;
+      box-shadow: 0 0 12px var(--toxin-crimson-glow);
+    }
+    .btn-sm { padding: 5px 10px; font-size: 12px; }
+
+    /* VIEW PANELS */
+    main {
+      flex: 1;
+      padding: 16px;
+      max-width: 1440px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .view-panel {
+      display: none;
+      animation: tabFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .view-panel.active { display: block; }
+
+    @keyframes tabFadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* CARD COMPONENTS */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-dark);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      position: relative;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #1a2c22;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #fff;
+    }
+
+    /* BADGES */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      border: 1px solid transparent;
+    }
+    .badge-tier { background: #1e293b; color: #38bdf8; border-color: #0284c7; }
+    .badge-tier-x { background: #3b0764; color: #e879f9; border-color: #c026d3; box-shadow: 0 0 10px rgba(192, 38, 211, 0.5); }
+    .badge-emerald { background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: #059669; }
+    .badge-gold { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border-color: #d97706; }
+    .badge-crimson { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border-color: #b91c1c; }
+    .badge-grail {
+      background: linear-gradient(135deg, #f59e0b, #ec4899);
+      color: #fff;
+      font-weight: 900;
+      border-color: #fef08a;
+      box-shadow: 0 0 12px rgba(236, 72, 153, 0.6);
+      animation: pulseGrail 2s infinite alternate;
+    }
+    @keyframes pulseGrail {
+      from { filter: drop-shadow(0 0 2px #f59e0b); }
+      to { filter: drop-shadow(0 0 10px #ec4899); }
+    }
+
+    /* ROSTER GRID & SNAKE DOSSIER */
+    .grid-roster {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 14px;
+    }
+
+    .snake-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-dark);
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: all 0.15s ease;
+    }
+    .snake-card:hover {
+      border-color: #2b493b;
+      transform: translateY(-2px);
+    }
+    .snake-card.grail-border {
+      border-color: var(--viper-gold);
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.25);
+    }
+
+    .snake-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .snake-name {
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .snake-sex { font-size: 13px; font-weight: 900; }
+    .sex-m { color: #38bdf8; }
+    .sex-f { color: #f472b6; }
+
+    .snake-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .gene-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin: 2px 0;
+    }
+
+    /* ANATOMICAL CANVAS */
+    .serpent-canvas {
+      width: 100%;
+      height: 84px;
+      background: radial-gradient(circle at center, #111a15 0%, #080e0b 100%);
+      border-radius: 8px;
+      border: 1px solid #1a2c23;
+      display: block;
+    }
+
+    /* IV PROGRESS BARS */
+    .iv-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 10px;
+      background: #0a110d;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #16241c;
+    }
+    .iv-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .iv-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      font-family: var(--font-mono);
+      color: var(--text-secondary);
+    }
+    .iv-bar-bg {
+      height: 5px;
+      background: #192720;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .iv-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+    .grade-sss { color: #ec4899; font-weight: 800; }
+    .grade-ss { color: #a855f7; font-weight: 800; }
+    .grade-s { color: #f59e0b; font-weight: 800; }
+    .grade-a { color: #10b981; font-weight: 700; }
+    .grade-b { color: #38bdf8; }
+    .grade-c { color: #94a3b8; }
+    .grade-d, .grade-f { color: #64748b; }
+
+    .snake-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      padding-top: 8px;
+      border-top: 1px solid #182820;
+    }
+    .snake-val {
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--viper-gold);
+      font-family: var(--font-mono);
+    }
+
+    /* FILTER BAR */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+      align-items: center;
+    }
+    .filter-select {
+      background: var(--bg-card);
+      border: 1px solid var(--border-dark);
+      padding: 6px 10px;
+      border-radius: 6px;
+      color: #fff;
+    }
+
+    /* MODAL OVERLAY */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-overlay.active { display: flex; }
+
+    .modal-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-dark);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 580px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+      animation: modalPop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes modalPop {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border-dark);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-body {
+      padding: 20px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .modal-footer {
+      padding: 14px 20px;
+      border-top: 1px solid var(--border-dark);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    /* GOD MODE MONOSPACE DRAWER */
+    #dev-console-drawer {
+      background: #040705;
+      border-bottom: 2px solid var(--venom-emerald);
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      position: relative;
+      z-index: 45;
+    }
+    #dev-console-drawer.open {
+      max-height: 520px;
+      overflow-y: auto;
+    }
+    .dev-content {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .dev-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .dev-label {
+      color: var(--venom-emerald);
+      font-weight: 700;
+      width: 130px;
+      flex-shrink: 0;
+    }
+
+    /* COLOSSEUM ARENA */
+    #arena-canvas-container {
+      position: relative;
+      width: 100%;
+      height: 240px;
+      background: radial-gradient(circle at center, #101c15 0%, #060b08 100%);
+      border-radius: 12px;
+      border: 1px solid #1e3328;
+      overflow: hidden;
+    }
+    #arena-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .telemetry-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .fighter-hud {
+      background: #0a110d;
+      border: 1px solid #182820;
+      border-radius: 8px;
+      padding: 10px;
+    }
+    .hud-name {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .gauge {
+      height: 8px;
+      background: #17241e;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 4px;
+    }
+    .gauge-fill { height: 100%; transition: width 0.1s linear; }
+
+    /* AUCTION LANES */
+    .auction-lane-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 14px;
+    }
+    .auction-lane-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-dark);
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+    }
+    .auction-lane-card.active-lane { border-color: var(--viper-gold); }
+    .timer-pill {
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 14px;
+      color: var(--viper-gold);
+    }
+    .timer-pill.urgent {
+      color: var(--toxin-crimson);
+      animation: pulseFast 0.5s infinite alternate;
+    }
+    @keyframes pulseFast {
+      from { opacity: 0.6; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1.02); }
+    }
+
+    /* CLEARANCE GRID */
+    .clearance-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 14px;
+    }
+    .clearance-card {
+      background: #0e1713;
+      border: 1px solid #1f3529;
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+    }
+    .clearance-card:hover { border-color: #2e5241; }
+
+    /* WONDER TRADE RADAR */
+    #radar-canvas {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: #08110d;
+      border: 2px solid var(--venom-emerald);
+      box-shadow: 0 0 20px var(--venom-emerald-glow);
+      display: block;
+      margin: 16px auto;
+    }
+
+    /* TOAST ALERTS */
+    #toast-container {
+      position: fixed;
+      top: calc(var(--safe-top) + 115px);
+      right: 16px;
+      z-index: 120;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+    .toast {
+      background: #0d1a14;
+      border: 1px solid var(--venom-emerald);
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+      animation: toastIn 0.25s ease-out;
+      pointer-events: auto;
+      max-width: 340px;
+    }
+    .toast-gold { border-color: var(--viper-gold); color: #fef08a; }
+    .toast-crimson { border-color: var(--toxin-crimson); color: #fca5a5; }
+
+    @keyframes toastIn {
+      from { transform: translateX(50px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .candling-display {
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.2) 0%, #000 75%);
+      border: 1px solid #ca8a04;
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      margin: 14px 0;
+    }
+
+    .codex-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      border-bottom: 1px solid #16241c;
+      font-size: 13px;
+    }
+    .codex-row:last-child { border-bottom: none; }
+  </style>
+</head>
+<body>
+
+  <!-- TOP HEADER HUD -->
+  <header>
+    <div class="header-bar">
+      <div class="brand" onclick="switchTab('vault')">
+        <div class="brand-logo">🐍</div>
+        <div class="brand-title">
+          <span>OPHIARIUM</span>
+          <span class="brand-subtitle">SERPENT SYNDICATE</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-sm" id="btn-sound-toggle" onclick="toggleMute()" title="Toggle Web Audio">
+          <span id="sound-icon">🔊</span>
+        </button>
+        <button class="btn btn-sm" onclick="toggleDevConsole()" style="font-family: var(--font-mono); color: var(--venom-emerald);">
+          &gt;_ DEV
+        </button>
+      </div>
+    </div>
+
+    <!-- LIVE RESOURCE TICKER -->
+    <div class="ticker-ribbon">
+      <div class="ticker-pill">
+        <span>💰</span>
+        <span class="stat-num" id="res-cash" style="color: var(--viper-gold);">$0</span>
+      </div>
+      <div class="ticker-pill">
+        <span>📅 Day</span>
+        <span class="stat-num" id="res-day">1</span>
+      </div>
+      <div class="ticker-pill">
+        <span>🐀 Rations:</span>
+        <span class="stat-num" id="res-food">0</span>
+      </div>
+      <div class="ticker-pill">
+        <span>💉 Antivenom:</span>
+        <span class="stat-num" id="res-meds">0</span>
+      </div>
+      <div class="ticker-pill">
+        <span>✨ Polish:</span>
+        <span class="stat-num" id="res-polish">0</span>
+      </div>
+      <div class="ticker-pill">
+        <span>🧬 Snakes:</span>
+        <span class="stat-num" id="res-snakes-count">0</span>
+      </div>
+    </div>
+
+    <!-- TOP NAVIGATION TABS (JUST UNDER TOP HUD) -->
+    <nav class="top-tab-nav" id="main-top-nav">
+      <button class="top-nav-btn active" onclick="switchTab('vault')">
+        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+        <span>Vault & Ledger</span>
+      </button>
+      <button class="top-nav-btn" onclick="switchTab('breeding')">
+        <svg viewBox="0 0 24 24"><path d="M10.5 4.5c.28 0 .5.22.5.5v2.09c2.05.34 3.75 1.76 4.46 3.69.43-.18.9-.28 1.4-.28 2.07 0 3.75 1.68 3.75 3.75S18.93 18 16.86 18c-.5 0-.97-.1-1.4-.28-.71 1.93-2.41 3.35-4.46 3.69V23.5c0 .28-.22.5-.5.5h-1c-.28 0-.5-.22-.5-.5v-2.09c-2.05-.34-3.75-1.76-4.46-3.69-.43.18-.9.28-1.4.28C2.57 18 .89 16.32.89 14.25S2.57 10.5 4.64 10.5c.5 0 .97.1 1.4.28.71-1.93 2.41-3.35 4.46-3.69V5c0-.28.22-.5.5-.5h1z"/></svg>
+        <span>Breeding Lair</span>
+      </button>
+      <button class="top-nav-btn" onclick="switchTab('arena')">
+        <svg viewBox="0 0 24 24"><path d="M6.92 5h10.16L12 1 6.92 5zM12 23l5.08-4H6.92L12 23zM2 17.08L6 12 2 6.92v10.16zm20 0V6.92L18 12l4 5.08z"/></svg>
+        <span>Colosseum</span>
+      </button>
+      <button class="top-nav-btn" onclick="switchTab('auction')">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <span>Consignment Auctions</span>
+      </button>
+      <button class="top-nav-btn" onclick="switchTab('clearance')">
+        <svg viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+        <span>Distressed Clearance (<span id="top-clearance-count">0</span>)</span>
+      </button>
+      <button class="top-nav-btn" onclick="switchTab('wondertrade')">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+        <span>Wonder Trade</span>
+      </button>
+      <button class="top-nav-btn" onclick="switchTab('logistics')">
+        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+        <span>Logistics & Labs</span>
+      </button>
+      <button class="top-nav-btn" onclick="switchTab('codex')">
+        <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
+        <span>Genetic Codex</span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- GOD MODE MONOSPACE CONSOLE DRAWER -->
+  <div id="dev-console-drawer">
+    <div class="dev-content">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1a2a22; padding-bottom:6px;">
+        <span style="color:var(--venom-emerald); font-weight:800;">[SYNDICATE GOD MODE // DEV CONSOLE]</span>
+        <button class="btn btn-sm" onclick="toggleDevConsole()">CLOSE [ESC]</button>
+      </div>
+      <div class="dev-group">
+        <span class="dev-label">CURRENCY:</span>
+        <button class="btn btn-sm btn-emerald" onclick="cheatCash(50000)">+$50k</button>
+        <button class="btn btn-sm btn-emerald" onclick="cheatCash(500000)">+$500k</button>
+        <button class="btn btn-sm btn-crimson" onclick="cheatBroke()">Broke ($50)</button>
+      </div>
+      <div class="dev-group">
+        <span class="dev-label">SUPPLIES:</span>
+        <button class="btn btn-sm" onclick="cheatSupplies(500, 100, 100)">+500 Rations / +100 Med / +100 Polish</button>
+      </div>
+      <div class="dev-group">
+        <span class="dev-label">ROSTER:</span>
+        <button class="btn btn-sm btn-gold" onclick="cheatMatureAll()">Instant Mature All Clutches</button>
+        <button class="btn btn-sm btn-gold" onclick="cheatSpawnTierX()">Spawn Apex Tier X</button>
+        <button class="btn btn-sm btn-gold" onclick="cheatSpawnGrail()">Spawn Grail (Solaris Blizzard)</button>
+        <button class="btn btn-sm" onclick="cheatMaxAllIVs()">Max All Roster IVs (100 SSS+)</button>
+      </div>
+      <div class="dev-group">
+        <span class="dev-label">TIMELAPSE:</span>
+        <button class="btn btn-sm" onclick="advanceDays(1)">+1 Day</button>
+        <button class="btn btn-sm" onclick="advanceDays(7)">+7 Days</button>
+        <button class="btn btn-sm" onclick="toggleGodArena()">God Mode Invincible: <span id="dev-god-arena">OFF</span></button>
+        <button class="btn btn-sm btn-crimson" onclick="factoryReset()">Factory Reset State</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST ALERTS CONTAINER -->
+  <div id="toast-container"></div>
+
+  <!-- MAIN APPLICATION VIEWS -->
+  <main>
+    <!-- 1. ROSTER VAULT -->
+    <section id="view-vault" class="view-panel active">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <span>🏛️</span>
+            <span>SERPENT ROSTER VAULT & MANAGEMENT LEDGER</span>
+          </div>
+          <button class="btn btn-sm btn-emerald" onclick="openBackupModal()">💾 Backup / Export</button>
+        </div>
+
+        <div class="filter-bar">
+          <select id="sort-roster" class="filter-select" onchange="renderRoster()">
+            <option value="val-desc">Sort: Value (High to Low)</option>
+            <option value="val-asc">Sort: Value (Low to High)</option>
+            <option value="tier-desc">Sort: Tier (Apex X to I)</option>
+            <option value="tier-asc">Sort: Tier (I to X)</option>
+            <option value="iv-desc">Sort: IV Total Rating</option>
+            <option value="recency">Sort: Recency / Newest</option>
+          </select>
+
+          <select id="filter-tier" class="filter-select" onchange="renderRoster()">
+            <option value="all">All Tiers (I - X)</option>
+            <option value="1">Tier I (Copperhead)</option>
+            <option value="2">Tier II (Saw-scaled Viper)</option>
+            <option value="3">Tier III (Cottonmouth)</option>
+            <option value="4">Tier IV (Timber Rattler)</option>
+            <option value="5">Tier V (Green Mamba)</option>
+            <option value="6">Tier VI (Forest Cobra)</option>
+            <option value="7">Tier VII (Coastal Taipan)</option>
+            <option value="8">Tier VIII (Black Mamba)</option>
+            <option value="9">Tier IX (King Cobra)</option>
+            <option value="10">Tier X (Leviathan Jormungandr)</option>
+          </select>
+
+          <select id="filter-sex" class="filter-select" onchange="renderRoster()">
+            <option value="all">All Sexes</option>
+            <option value="M">Sires (♂ Male)</option>
+            <option value="F">Dams (♀ Female)</option>
+          </select>
+        </div>
+
+        <div id="roster-grid" class="grid-roster">
+          <!-- Serpent cards populated dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. 5-SLOT BREEDING LAIR -->
+    <section id="view-breeding" class="view-panel">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <span>🧬</span>
+            <span>5-SLOT BREEDING LAIR & PUNNETT SIMULATOR</span>
+          </div>
+          <button class="btn btn-sm btn-gold" onclick="autoPairOptimal()">⚡ Auto-Pair Best Genetic Match</button>
+        </div>
+
+        <!-- PAIR SELECTOR -->
+        <div style="background:#09120e; border:1px solid #1a2f24; border-radius:10px; padding:14px; margin-bottom:16px;">
+          <h4 style="font-size:13px; color:var(--venom-emerald); margin-bottom:10px;">STAGE CLUTCH MATING PAIR</h4>
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:12px;">
+            <div>
+              <label style="font-size:11px; color:var(--text-secondary); display:block; margin-bottom:4px;">SELECT SIRE (♂ MALE)</label>
+              <select id="breed-sire-select" class="filter-select" style="width:100%;" onchange="updatePunnettCalculation()">
+                <option value="">-- Choose Sire --</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:11px; color:var(--text-secondary); display:block; margin-bottom:4px;">SELECT DAM (♀ FEMALE)</label>
+              <select id="breed-dam-select" class="filter-select" style="width:100%;" onchange="updatePunnettCalculation()">
+                <option value="">-- Choose Dam --</option>
+              </select>
+            </div>
+            <div style="display:flex; align-items:flex-end;">
+              <button class="btn btn-emerald" style="width:100%; height:42px;" onclick="initiateBreedingClutch()">
+                🧪 Fertilize & Incubate
+              </button>
+            </div>
+          </div>
+
+          <!-- LIVE PUNNETT ODDS -->
+          <div id="punnett-results" style="margin-top:14px; padding:12px; background:#050907; border-radius:8px; border:1px dashed #1c3529; font-size:12px; display:none;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+              <span style="font-weight:800; color:var(--viper-gold); font-family:var(--font-mono);">🎲 LIVE 1,000-TRIAL MONTE CARLO PUNNETT PROBABILITIES</span>
+              <span class="mono" style="color:var(--text-muted);">1,000 Trials</span>
+            </div>
+            <div id="punnett-odds-breakdown" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:8px;"></div>
+          </div>
+        </div>
+
+        <!-- 5 NURSERY INCUBATION CHAMBERS -->
+        <h4 style="font-size:13px; color:var(--text-secondary); margin-bottom:10px; letter-spacing:0.05em;">ACTIVE INCUBATION CHAMBERS (4-DAY CYCLE)</h4>
+        <div id="incubator-slots-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:12px;"></div>
+      </div>
+    </section>
+
+    <!-- 3. 2D MICRO-ARENA COLOSSEUM -->
+    <section id="view-arena" class="view-panel">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <span>⚔️</span>
+            <span>2D MICRO-ARENA COLOSSEUM</span>
+          </div>
+          <div style="display:flex; gap:6px;">
+            <button class="btn btn-sm" id="btn-speed-1x" onclick="setArenaSpeed(1)">1x</button>
+            <button class="btn btn-sm" id="btn-speed-3x" onclick="setArenaSpeed(3)">3x</button>
+            <button class="btn btn-sm btn-crimson" onclick="instantResolveArena()">Instant</button>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:12px; margin-bottom:14px;">
+          <div>
+            <label style="font-size:11px; color:var(--text-secondary); display:block; margin-bottom:4px;">YOUR CHAMPION SERPENT</label>
+            <select id="arena-champion-select" class="filter-select" style="width:100%;" onchange="setupArenaCombatant()">
+              <option value="">-- Choose Champion --</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:11px; color:var(--text-secondary); display:block; margin-bottom:4px;">SYNDICATE CHALLENGE TIER</label>
+            <select id="arena-difficulty-select" class="filter-select" style="width:100%;" onchange="generateRivalSerpent()">
+              <option value="1">Rank C: Pit Vagrant (Purse: $400)</option>
+              <option value="2">Rank B: Enforcer Viper (Purse: $1,200)</option>
+              <option value="3">Rank A: Syndicate Assassin (Purse: $3,500)</option>
+              <option value="4">Rank S: High Patriarch Leviathan (Purse: $12,000)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- CANVAS -->
+        <div id="arena-canvas-container">
+          <canvas id="arena-canvas"></canvas>
+        </div>
+
+        <!-- TELEMETRY HUD -->
+        <div class="telemetry-row">
+          <div class="fighter-hud" id="hud-player">
+            <div class="hud-name">
+              <span id="player-hud-name" style="color:var(--venom-emerald);">Champion</span>
+              <span id="player-hud-stance" class="badge badge-emerald">AGGRESSIVE</span>
+            </div>
+            <div class="gauge">
+              <div id="player-hp-bar" class="gauge-fill" style="width:100%; background:var(--venom-emerald);"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:10px; font-family:var(--font-mono); color:var(--text-secondary);">
+              <span>HP <span id="player-hp-text">100/100</span></span>
+              <span>STA <span id="player-sta-text">100%</span></span>
+            </div>
+          </div>
+
+          <div class="fighter-hud" id="hud-rival">
+            <div class="hud-name">
+              <span id="rival-hud-name" style="color:var(--toxin-crimson);">Syndicate Challenger</span>
+              <span id="rival-hud-stance" class="badge badge-crimson">COUNTER</span>
+            </div>
+            <div class="gauge">
+              <div id="rival-hp-bar" class="gauge-fill" style="width:100%; background:var(--toxin-crimson);"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:10px; font-family:var(--font-mono); color:var(--text-secondary);">
+              <span>HP <span id="rival-hp-text">100/100</span></span>
+              <span>STA <span id="rival-sta-text">100%</span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- STANCES & CONTROLS -->
+        <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; align-items:center; justify-content:space-between;">
+          <div style="display:flex; gap:6px;">
+            <button class="btn btn-sm" id="stance-agg" onclick="setStance('Aggressive')">🗡️ Aggressive (+Atk)</button>
+            <button class="btn btn-sm" id="stance-def" onclick="setStance('Defensive')">🛡️ Defensive (+Def/Regen)</button>
+            <button class="btn btn-sm" id="stance-cnt" onclick="setStance('Counter')">⚡ Counter (+Crit)</button>
+          </div>
+          <button class="btn btn-emerald" id="btn-start-arena" onclick="startArenaMatch()" style="padding:10px 24px; font-size:15px;">
+            ⚔️ ENGAGE DUEL
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. 5-LANE PLAYER CONSIGNMENT AUCTION -->
+    <section id="view-auction" class="view-panel">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <span>🏷️</span>
+            <span>5-LANE PLAYER CONSIGNMENT AUCTION HOUSE</span>
+          </div>
+          <button class="btn btn-sm btn-gold" onclick="openConsignModal()">+ Consign Serpent</button>
+        </div>
+
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">
+          5 rival syndicates place competitive real-time bids. Bids under 3s trigger the <strong style="color:var(--viper-gold);">Anti-Snipe +3s extension</strong>. Apply Polish (+30% hype) before gavel fall! (8% broker commission deducted on final hammer).
+        </p>
+
+        <div id="auction-lanes-container" class="auction-lane-grid">
+          <!-- 5 Consignment Lanes -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. 10-SECOND DISTRESSED CLEARANCE ROOST (3-6 LISTINGS) -->
+    <section id="view-clearance" class="view-panel">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <span>⚡</span>
+            <span>10-SECOND DISTRESSED CLEARANCE ROOST (3–6 LISTINGS)</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:11px; color:var(--text-muted);">GLOBAL REFRESH IN:</span>
+            <span id="clearance-timer-badge" class="badge badge-crimson stat-num" style="font-size:14px;">10.0s</span>
+          </div>
+        </div>
+
+        <p style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">
+          Underground seizures, customs confiscations, malnourished rescues, and defect liquidation lots. Offered at <strong style="color:var(--venom-emerald);">70% - 92% off retail valuation!</strong> Snag fast before the countdown ticks to zero!
+        </p>
+
+        <div id="clearance-deals-grid" class="clearance-grid">
+          <!-- 3 to 6 active listings rendered dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. GLOBAL MYSTERY TRADE (WONDER TRADE) -->
+    <section id="view-wondertrade" class="view-panel">
+      <div class="card" style="text-align:center;">
+        <div class="card-header">
+          <div class="card-title">
+            <span>🌐</span>
+            <span>GLOBAL MYSTERY TRADE (ASYNC SATELLITE EXCHANGE)</span>
+          </div>
+        </div>
+
+        <p style="font-size:12px; color:var(--text-secondary); max-width:620px; margin:0 auto 16px;">
+          Deposit any serpent into the global underground satellite broker. Radar sweeps international syndicates across Bangkok [TH], Outback [AU], Amazonia [BR], Cairo [EG], and Tokyo [JP]. Includes an <strong style="color:var(--viper-gold);">8% Golden Jackpot roll chance!</strong>
+        </p>
+
+        <canvas id="radar-canvas" width="180" height="180"></canvas>
+        <div id="radar-status-text" class="mono" style="font-size:13px; color:var(--venom-emerald); margin-bottom:14px;">
+          BROKER SATELLITE IDLE // SELECT SERPENT TO TRANSMIT
+        </div>
+
+        <div style="max-width:380px; margin:0 auto 16px;">
+          <select id="wondertrade-select" class="filter-select" style="width:100%; margin-bottom:10px;">
+            <option value="">-- Choose Serpent to Deposit --</option>
+          </select>
+          <button id="btn-execute-wondertrade" class="btn btn-emerald" style="width:100%; height:44px;" onclick="executeWonderTrade()">
+            📡 Transmit & Wonder Trade
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. LOGISTICS, LABS & CONDITIONING -->
+    <section id="view-logistics" class="view-panel">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <span>📦</span>
+            <span>LOGISTICS, SUPPLIES & SERPENT TRAINING LABS</span>
+          </div>
+          <button class="btn btn-emerald" onclick="advanceDays(1)" style="padding:10px 18px; font-size:14px;">
+            📅 Advance Day (+1 Day Tick)
+          </button>
+        </div>
+
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:16px;">
+          <!-- SUPPLY PROCUREMENT STORE -->
+          <div style="background:#09120e; border:1px solid #1a2f24; border-radius:10px; padding:14px;">
+            <h4 style="font-size:14px; color:var(--viper-gold); margin-bottom:10px;">SUPPLY PROCUREMENT</h4>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                  <div style="font-weight:700; font-size:13px;">🐀 Rodent Rations x10</div>
+                  <div style="font-size:11px; color:var(--text-muted);">$100 (10 Feedings)</div>
+                </div>
+                <button class="btn btn-sm btn-gold" onclick="buySupplies('food', 10, 100)">Buy $100</button>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                  <div style="font-weight:700; font-size:13px;">🐀 Rodent Bulk x50</div>
+                  <div style="font-size:11px; color:var(--text-muted);">$450 (10% bulk discount)</div>
+                </div>
+                <button class="btn btn-sm btn-gold" onclick="buySupplies('food', 50, 450)">Buy $450</button>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                  <div style="font-weight:700; font-size:13px;">💉 Antivenom Serum x5</div>
+                  <div style="font-size:11px; color:var(--text-muted);">$250 (Full Health Heal)</div>
+                </div>
+                <button class="btn btn-sm btn-gold" onclick="buySupplies('meds', 5, 250)">Buy $250</button>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                  <div style="font-weight:700; font-size:13px;">✨ Serpent Wax Polish x3</div>
+                  <div style="font-size:11px; color:var(--text-muted);">$300 (+30% Auction Hype)</div>
+                </div>
+                <button class="btn btn-sm btn-gold" onclick="buySupplies('polish', 3, 300)">Buy $300</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TRAINING REGIMENS -->
+          <div style="background:#09120e; border:1px solid #1a2f24; border-radius:10px; padding:14px;">
+            <h4 style="font-size:14px; color:var(--venom-emerald); margin-bottom:10px;">CONDITIONING & DRILLS</h4>
+            <label style="font-size:11px; color:var(--text-secondary); display:block; margin-bottom:4px;">SELECT SERPENT TO DRILL</label>
+            <select id="training-serpent-select" class="filter-select" style="width:100%; margin-bottom:12px;">
+              <option value="">-- Choose Trainee --</option>
+            </select>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+              <button class="btn btn-sm" onclick="trainSerpent('vp')">🧪 Venom Milking (+VP)</button>
+              <button class="btn btn-sm" onclick="trainSerpent('ss')">⚡ Strike Maze (+SS)</button>
+              <button class="btn btn-sm" onclick="trainSerpent('sd')">🛡️ Scale Fortifying (+SD)</button>
+              <button class="btn btn-sm" onclick="trainSerpent('ra')">🎯 Reflex Agility (+RA)</button>
+            </div>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:10px;">
+              *Training consumes 20 Satiety/Energy and raises IV stat permanently by +2 to +4 points.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. GENETIC CODEX & WORLD'S FIRST GRAILS -->
+    <section id="view-codex" class="view-panel">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <span>📜</span>
+            <span>GENETIC CODEX & WORLD'S FIRST GRAILS</span>
+          </div>
+        </div>
+
+        <h4 style="font-size:13px; color:var(--viper-gold); margin-bottom:8px;">🌟 WORLD'S FIRST GRAIL COMBINATIONS</h4>
+        <div id="codex-grails-list" style="background:#09120e; border:1px solid #1a2f24; border-radius:10px; margin-bottom:20px;"></div>
+
+        <h4 style="font-size:13px; color:var(--venom-emerald); margin-bottom:8px;">10 SEQUENTIAL PROGRESSION TIERS</h4>
+        <div id="codex-tiers-list" style="background:#09120e; border:1px solid #1a2f24; border-radius:10px;"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODALS -->
+
+  <!-- DOSSIER MODAL -->
+  <div id="modal-dossier" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="dossier-title" style="font-size:15px;">SERPENT DOSSIER</h3>
+        <button class="btn btn-sm" onclick="closeModal('modal-dossier')">✕</button>
+      </div>
+      <div class="modal-body" id="dossier-content"></div>
+      <div class="modal-footer" id="dossier-actions"></div>
+    </div>
+  </div>
+
+  <!-- CANDLING INSPECTION MODAL -->
+  <div id="modal-candling" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 style="color:var(--viper-gold);">🔬 BIO-OPTIC EGG CANDLING INSPECTION</h3>
+        <button class="btn btn-sm" onclick="closeModal('modal-candling')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="candling-display">
+          <div style="font-size:48px; margin-bottom:8px;">🥚✨</div>
+          <div id="candling-embryo-preview" class="mono" style="font-size:14px; font-weight:800; color:#fff;">
+            EMBRYO BIO-RESONANCE: DETECTING...
+          </div>
+        </div>
+        <div id="candling-details" style="font-size:13px; line-height:1.6;"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-crimson" id="btn-cull-egg" onclick="cullInspectedEgg()">Cull Embryo (Free Slot)</button>
+        <button class="btn btn-emerald" onclick="closeModal('modal-candling')">Keep Incubating</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORLD'S FIRST GRAIL MODAL -->
+  <div id="modal-grail" class="modal-overlay">
+    <div class="modal-box" style="border: 2px solid var(--viper-gold); box-shadow: 0 0 35px var(--viper-gold-glow);">
+      <div class="modal-header" style="background:#221805;">
+        <h3 style="color:var(--viper-gold); font-size:16px;">🌟 WORLD'S FIRST GRAIL DISCOVERY!</h3>
+      </div>
+      <div class="modal-body" style="text-align:center;">
+        <div style="font-size:52px; margin:12px 0;">👑🐍✨</div>
+        <h2 id="grail-combo-name" style="color:var(--viper-gold); margin-bottom:8px;">SOLARIS BLIZZARD</h2>
+        <p style="font-size:13px; color:var(--text-secondary); margin-bottom:16px;">
+          The global ophiological community bows in awe! You have successfully synthesized an Apex Grail morph.
+        </p>
+        <div style="background:#090f0c; border:1px solid #233c2e; border-radius:10px; padding:12px; margin-bottom:16px; text-align:left;">
+          <div style="font-size:11px; color:var(--text-muted); margin-bottom:4px;">NAME YOUR HISTORIC SPECIMEN:</div>
+          <input type="text" id="grail-specimen-name" style="width:100%; background:#132019; padding:8px 12px;" value="Solaris Sovereign I">
+        </div>
+        <div class="mono" style="font-size:13px; color:var(--venom-emerald);">
+          + BOUNTY GRANT: <span id="grail-bounty-val">$50,000</span><br>
+          + PERMANENT 4.2x AUCTION VALUE MULTIPLIER
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-gold" style="width:100%;" onclick="confirmGrailDiscovery()">Seal Into Permanent Codex</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONSIGNMENT MODAL -->
+  <div id="modal-consign" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>CONSIGN SERPENT TO AUCTION</h3>
+        <button class="btn btn-sm" onclick="closeModal('modal-consign')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="margin-bottom:14px;">
+          <label style="font-size:11px; color:var(--text-secondary); display:block; margin-bottom:4px;">SELECT SERPENT</label>
+          <select id="consign-serpent-select" class="filter-select" style="width:100%;"></select>
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="font-size:11px; color:var(--text-secondary); display:block; margin-bottom:4px;">STARTING RESERVE PRICE ($)</label>
+          <input type="number" id="consign-reserve-price" style="width:100%; background:var(--bg-card); padding:8px;" value="500">
+        </div>
+        <div style="font-size:11px; color:var(--text-muted);">
+          Consignment auction runs for 35 seconds across rival bidding syndicates. Anti-snipe extends timer +3s if bid in final 3 seconds.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-gold" onclick="submitConsignment()">Launch Auction Lane</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BACKUP & RESTORE MODAL -->
+  <div id="modal-backup" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>💾 PERSISTENCE & JSON BACKUP</h3>
+        <button class="btn btn-sm" onclick="closeModal('modal-backup')">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:12px; color:var(--text-secondary); margin-bottom:8px;">
+          Export your entire syndicate empire to a clean JSON string, or restore an existing save.
+        </p>
+        <textarea id="backup-json-area" style="width:100%; height:180px; background:#070d0a; color:var(--venom-emerald); font-family:var(--font-mono); font-size:12px; padding:10px; resize:none;"></textarea>
+      </div>
+      <div class="modal-footer" style="flex-wrap:wrap;">
+        <button class="btn btn-sm" onclick="copyBackupToClipboard()">📋 Copy Export</button>
+        <button class="btn btn-sm btn-emerald" onclick="importBackupJson()">📥 Restore From JSON</button>
+        <button class="btn btn-sm" onclick="closeModal('modal-backup')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       OPHIARIUM CORE GAME ENGINE
+       ========================================================================== */
+
+    // 1. NATIVE WEB AUDIO API SYNTHESIZER
+    let audioCtx = null;
+    let isMuted = false;
+
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) audioCtx = new AudioContextClass();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function toggleMute() {
+      initAudio();
+      isMuted = !isMuted;
+      document.getElementById('sound-icon').textContent = isMuted ? '🔇' : '🔊';
+      showToast(isMuted ? 'Audio muted' : 'Audio unmuted', 'info');
+    }
+
+    const SoundFX = {
+      strike() {
+        if (isMuted || !audioCtx) return;
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(420, now);
+        osc.frequency.exponentialRampToValueAtTime(75, now + 0.12);
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.12);
+      },
+      hiss() {
+        if (isMuted || !audioCtx) return;
+        const bufferSize = audioCtx.sampleRate * 0.35;
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+        const noise = audioCtx.createBufferSource();
+        noise.buffer = buffer;
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(2600, audioCtx.currentTime);
+        filter.Q.setValueAtTime(3.5, audioCtx.currentTime);
+        const gain = audioCtx.createGain();
+        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(audioCtx.destination);
+        noise.start();
+      },
+      cash() {
+        if (isMuted || !audioCtx) return;
+        const now = audioCtx.currentTime;
+        [987, 1318].forEach((freq, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+          gain.gain.setValueAtTime(0.2, now + idx * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.28);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now + idx * 0.08);
+          osc.stop(now + idx * 0.08 + 0.28);
+        });
+      },
+      gavel() {
+        if (isMuted || !audioCtx) return;
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(140, now);
+        osc.frequency.exponentialRampToValueAtTime(30, now + 0.18);
+        gain.gain.setValueAtTime(0.4, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.18);
+      },
+      fanfare() {
+        if (isMuted || !audioCtx) return;
+        const now = audioCtx.currentTime;
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.09);
+          gain.gain.setValueAtTime(0.25, now + idx * 0.09);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.09 + 0.38);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now + idx * 0.09);
+          osc.stop(now + idx * 0.09 + 0.38);
+        });
+      },
+      alert() {
+        if (isMuted || !audioCtx) return;
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, now);
+        gain.gain.setValueAtTime(0.18, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.18);
+      }
+    };
+
+    window.addEventListener('click', () => initAudio(), { once: true });
+    window.addEventListener('touchstart', () => initAudio(), { once: true });
+
+    // 2. THE 10 SEQUENTIAL PROGRESSION TIERS
+    const TIERS = {
+      1: { name: "Copperhead Hatchling", weapon: "Coagulant Strike", baseVal: 180, hp: 100, atk: 18, def: 12, ground: '#d99b74', pattern: '#7c2d12', belly: '#fed7aa', eye: '#78350f', patternType: 'hourglass', headType: 'viper' },
+      2: { name: "Saw-scaled Viper", weapon: "Vasculotoxic Sideroll", baseVal: 450, hp: 150, atk: 28, def: 20, ground: '#bfa588', pattern: '#451a03', belly: '#f5ebe0', eye: '#b45309', patternType: 'blotch', headType: 'viper' },
+      3: { name: "Cottonmouth Bruiser", weapon: "Cytotoxic Gape", baseVal: 1100, hp: 230, atk: 42, def: 30, ground: '#4b463a', pattern: '#201d16', belly: '#94a3b8', eye: '#1e293b', patternType: 'crossband', headType: 'viper' },
+      4: { name: "Timber Rattlesnake", weapon: "Dual Neuro-Cardiotoxin", baseVal: 2800, hp: 340, atk: 62, def: 42, ground: '#71717a', pattern: '#18181b', belly: '#e4e4e7', eye: '#ca8a04', patternType: 'chevron', headType: 'viper', hasRattle: true },
+      5: { name: "Green Mamba Arboreal", weapon: "Disseminated Hemolysin", baseVal: 7000, hp: 480, atk: 88, def: 58, ground: '#10b981', pattern: '#064e3b', belly: '#86efac', eye: '#064e3b', patternType: 'faint', headType: 'mamba' },
+      6: { name: "Forest Cobra", weapon: "Post-Synaptic Spit", baseVal: 16500, hp: 660, atk: 124, def: 80, ground: '#453823', pattern: '#1c1917', belly: '#fef08a', eye: '#1c1917', patternType: 'banded', headType: 'cobra' },
+      7: { name: "Coastal Taipan", weapon: "Taipoxin Hyper-Strike", baseVal: 40000, hp: 900, atk: 175, def: 110, ground: '#854d0e', pattern: '#451a03', belly: '#fef3c7', eye: '#18181b', patternType: 'saddle', headType: 'taipan' },
+      8: { name: "Black Mamba", weapon: "Dendrotoxin Overdrive", baseVal: 95000, hp: 1250, atk: 240, def: 150, ground: '#475569', pattern: '#1e293b', belly: '#94a3b8', eye: '#0f172a', patternType: 'gunmetal', headType: 'mamba', blackMouth: true },
+      9: { name: "King Cobra", weapon: "Ophiotoxic Devourer", baseVal: 220000, hp: 1750, atk: 330, def: 200, ground: '#785934', pattern: '#fef3c7', belly: '#fde68a', eye: '#451a03', patternType: 'chevrons', headType: 'king_cobra' },
+      10: { name: "Leviathan Jormungandr", weapon: "Apex Voidtoxin Sovereign", baseVal: 650000, hp: 2800, atk: 480, def: 300, ground: '#09090b', pattern: '#e879f9', belly: '#06b6d4', eye: '#f43f5e', patternType: 'bioluminescent', headType: 'leviathan' }
+    };
+
+    // 3. GENETICS SPECIFICATION
+    const RECESSIVES = [
+      { id: 'albino', name: 'Albino', desc: 'Amelanistic ivory/cream with golden daffodil saddles and ruby eyes', ground: '#fef3c7', pattern: '#f59e0b', belly: '#fffbeb', eye: '#ef4444' },
+      { id: 'axanthic', name: 'Axanthic', desc: 'Monochrome pewter-silver with charcoal diamond saddles', ground: '#94a3b8', pattern: '#1e293b', belly: '#cbd5e1', eye: '#64748b' },
+      { id: 'piebald', name: 'Piebald', desc: 'Pure porcelain white unpigmented patches over dorsal patterns', isPiebald: true },
+      { id: 'lavender', name: 'Lavender', desc: 'Lilac-gray pastel base with muted plum/apricot saddles and deep wine eyes', ground: '#e2e8f0', pattern: '#a855f7', belly: '#f3e8ff', eye: '#831843' },
+      { id: 'sunset', name: 'Sunset T+', desc: 'Deep burnt copper amber with caramel highlights and glowing eye rim', ground: '#ea580c', pattern: '#7c2d12', belly: '#fdba74', eye: '#b45309' },
+      { id: 'ghost', name: 'Ghost Chimera', desc: 'Ethereal translucent smoky slate with faint bioluminescent vapor', ground: '#67e8f9', pattern: '#334155', belly: '#cffafe', eye: '#06b6d4', isGhost: true }
+    ];
+
+    const CODOMS = [
+      { id: 'enchi', norm: 'Enchi', super: 'Super Enchi', desc: '+15 Constriction Power' },
+      { id: 'pastel', norm: 'Pastel', super: 'Super Pastel', desc: '+15 Strike Speed' },
+      { id: 'clown', norm: 'Clown', super: 'Super Clown', desc: '+20 Venom Potency' },
+      { id: 'mojave', norm: 'Mojave', super: 'Super Mojave (BEL)', desc: '+25 Scale Density' }
+    ];
+
+    const GRAILS = [
+      {
+        id: 'solaris',
+        name: 'Solaris Blizzard',
+        reqText: 'Albino (Visual) + Super Pastel + Sunset T+ (Visual)',
+        check: (s) => isVisual(s, 'albino') && s.codoms.pastel === 2 && isVisual(s, 'sunset'),
+        bounty: 50000,
+        ground: '#fdfefe', pattern: '#fef08a', belly: '#ffffff', eye: '#f43f5e'
+      },
+      {
+        id: 'abyssal',
+        name: 'Void Chimera',
+        reqText: 'Axanthic (Visual) + Piebald (Visual) + Super Clown',
+        check: (s) => isVisual(s, 'axanthic') && isVisual(s, 'piebald') && s.codoms.clown === 2,
+        bounty: 75000,
+        ground: '#0f172a', pattern: '#334155', belly: '#ffffff', eye: '#f59e0b', isPiebald: true
+      },
+      {
+        id: 'godhead',
+        name: 'Crown Jewel Godhead',
+        reqText: 'Ghost Chimera (Visual) + Super Enchi + Super Mojave (BEL)',
+        check: (s) => isVisual(s, 'ghost') && s.codoms.enchi === 2 && s.codoms.mojave === 2,
+        bounty: 125000,
+        ground: '#f8fafc', pattern: '#e879f9', belly: '#c084fc', eye: '#38bdf8'
+      }
+    ];
+
+    function isVisual(snake, recId) {
+      const g = snake.recessives.find(r => r.id === recId);
+      return g && g.state === 'visual';
+    }
+
+    function isHet(snake, recId) {
+      const g = snake.recessives.find(r => r.id === recId);
+      return g && g.state === 'het';
+    }
+
+    // 4. PERSISTENCE & STATE
+    const STORAGE_KEY = 'OPHIARIUM_SYNDICATE_V2';
+
+    let State = {
+      cash: 2500,
+      day: 1,
+      food: 30,
+      meds: 8,
+      polish: 4,
+      godArena: false,
+      roster: [],
+      incubators: [null, null, null, null, null],
+      auctions: [null, null, null, null, null],
+      discoveredGrails: [],
+      nextId: 1
+    };
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(State));
+      } catch (e) {
+        console.error("Save state error:", e);
+      }
+      updateHeaderStats();
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          State = Object.assign(State, parsed);
+        } else {
+          initStarterState();
+        }
+      } catch (e) {
+        initStarterState();
+      }
+    }
+
+    function initStarterState() {
+      State.cash = 3500;
+      State.day = 1;
+      State.food = 35;
+      State.meds = 8;
+      State.polish = 5;
+      State.roster = [
+        createSerpent({ name: "Russet Strike", tier: 1, sex: 'M', codoms: { pastel: 1 }, recessives: [{ id: 'albino', state: 'het' }] }),
+        createSerpent({ name: "Obsidian Coil", tier: 1, sex: 'F', codoms: { pastel: 1 }, recessives: [{ id: 'albino', state: 'het' }] })
+      ];
+      State.incubators = [null, null, null, null, null];
+      State.auctions = [null, null, null, null, null];
+      State.discoveredGrails = [];
+      State.nextId = 10;
+      saveState();
+    }
+
+    // 5. SERPENT GENERATION & DYNAMIC VALUATION
+    function createSerpent(custom = {}) {
+      const id = State.nextId++;
+      const tier = custom.tier || 1;
+      const sex = custom.sex || (Math.random() < 0.5 ? 'M' : 'F');
+      const origin = custom.origin || 'Ophiarium Prime';
+
+      const ivs = custom.ivs || {
+        vp: Math.floor(Math.random() * 45) + 35,
+        ss: Math.floor(Math.random() * 45) + 35,
+        sd: Math.floor(Math.random() * 45) + 35,
+        cp: Math.floor(Math.random() * 45) + 35,
+        ra: Math.floor(Math.random() * 45) + 35
+      };
+
+      const recessives = custom.recessives ? JSON.parse(JSON.stringify(custom.recessives)) : [];
+      const codoms = Object.assign({ enchi: 0, pastel: 0, clown: 0, mojave: 0 }, custom.codoms || {});
+
+      const name = custom.name || generateSerpentName(tier, codoms, recessives);
+
+      return {
+        id,
+        name,
+        tier,
+        sex,
+        origin,
+        ivs,
+        recessives,
+        codoms,
+        satiety: custom.satiety !== undefined ? custom.satiety : 90,
+        health: custom.health !== undefined ? custom.health : 100,
+        energy: custom.energy !== undefined ? custom.energy : 100,
+        polished: custom.polished || false,
+        wins: custom.wins || 0,
+        losses: custom.losses || 0,
+        conditionReason: custom.conditionReason || null
+      };
+    }
+
+    function generateSerpentName(tier, codoms, recessives) {
+      const prefixes = ["Copper", "Obsidian", "Amber", "Viper", "Sovereign", "Phantom", "Cinder", "Taipan", "Apex", "Ghost", "Solar", "Crown"];
+      const suffixes = ["Fang", "Strike", "Grip", "Scale", "Spire", "Hiss", "Terror", "Weaver", "Gaze", "Shadow"];
+      const p = prefixes[Math.floor(Math.random() * prefixes.length)];
+      const s = suffixes[Math.floor(Math.random() * suffixes.length)];
+      return `${p} ${s}`;
+    }
+
+    function calculateValuation(snake) {
+      if (!snake) return 0;
+      const base = TIERS[snake.tier].baseVal;
+      const ivTotal = snake.ivs.vp + snake.ivs.ss + snake.ivs.sd + snake.ivs.cp + snake.ivs.ra;
+      const ivMult = 0.5 + (ivTotal / 500) * 1.3;
+
+      let morphMult = 1.0;
+      snake.recessives.forEach(r => {
+        if (r.state === 'visual') morphMult += (r.id === 'ghost' ? 3.0 : (r.id === 'piebald' ? 1.5 : 0.85));
+        if (r.state === 'het') morphMult += 0.25;
+      });
+
+      Object.keys(snake.codoms).forEach(k => {
+        const val = snake.codoms[k];
+        if (val === 1) morphMult += 0.65;
+        if (val === 2) morphMult += 1.85;
+      });
+
+      let grailMult = 1.0;
+      GRAILS.forEach(g => {
+        if (g.check(snake)) grailMult = 4.2;
+      });
+
+      const conditionMult = ((snake.health / 100) * 0.5) + ((snake.satiety / 100) * 0.3) + 0.2;
+      const polishMult = snake.polished ? 1.3 : 1.0;
+
+      const finalVal = Math.round(base * ivMult * morphMult * grailMult * conditionMult * polishMult);
+      return Math.max(50, finalVal);
+    }
+
+    function getIVGrade(val) {
+      if (val >= 100) return { grade: 'SSS+', cls: 'grade-sss' };
+      if (val >= 96) return { grade: 'SS', cls: 'grade-ss' };
+      if (val >= 88) return { grade: 'S', cls: 'grade-s' };
+      if (val >= 76) return { grade: 'A', cls: 'grade-a' };
+      if (val >= 60) return { grade: 'B', cls: 'grade-b' };
+      if (val >= 40) return { grade: 'C', cls: 'grade-c' };
+      if (val >= 20) return { grade: 'D', cls: 'grade-d' };
+      return { grade: 'F', cls: 'grade-f' };
+    }
+
+    // 6. REALISTIC & ACCURATE PROCEDURAL SERPENTINE ANATOMY RENDERER
+    function getSerpentVisualPalette(snake) {
+      const tierDef = TIERS[snake.tier];
+      let p = {
+        ground: tierDef.ground,
+        pattern: tierDef.pattern,
+        belly: tierDef.belly,
+        eye: tierDef.eye,
+        patternType: tierDef.patternType,
+        headType: tierDef.headType,
+        hasRattle: tierDef.hasRattle || false,
+        blackMouth: tierDef.blackMouth || false,
+        isPiebald: false,
+        isGhost: false
+      };
+
+      // Recessive morph overrides
+      if (isVisual(snake, 'albino')) {
+        p.ground = '#fef3c7'; // Ivory / porcelain
+        p.pattern = '#f59e0b'; // Daffodil / peach saddles
+        p.belly = '#fffbeb';
+        p.eye = '#ef4444'; // Pink/ruby iris
+      } else if (isVisual(snake, 'axanthic')) {
+        p.ground = '#94a3b8'; // Cool pewter gray
+        p.pattern = '#1e293b'; // Charcoal black saddles
+        p.belly = '#cbd5e1';
+        p.eye = '#64748b';
+      } else if (isVisual(snake, 'lavender')) {
+        p.ground = '#e2e8f0'; // Lilac gray
+        p.pattern = '#a855f7'; // Plum saddles
+        p.belly = '#f3e8ff';
+        p.eye = '#831843'; // Deep wine
+      } else if (isVisual(snake, 'sunset')) {
+        p.ground = '#ea580c'; // Burnt copper amber
+        p.pattern = '#7c2d12'; // Caramel amber
+        p.belly = '#fdba74';
+        p.eye = '#b45309';
+      } else if (isVisual(snake, 'ghost')) {
+        p.ground = '#67e8f9'; // Smoky translucent cyan
+        p.pattern = '#334155';
+        p.belly = '#cffafe';
+        p.eye = '#06b6d4';
+        p.isGhost = true;
+      }
+
+      if (isVisual(snake, 'piebald')) {
+        p.isPiebald = true;
+      }
+
+      // Codominant Super Overrides
+      if (snake.codoms.mojave === 2) {
+        // Super Mojave: Blue-Eyed Leucistic (BEL)
+        p.ground = '#f8fafc'; // Pearlescent chalk white
+        p.pattern = '#f1f5f9'; // Patternless
+        p.belly = '#ffffff';
+        p.eye = '#38bdf8'; // Striking icy blue
+        p.patternType = 'solid';
+      } else if (snake.codoms.pastel === 2) {
+        p.ground = '#fde047'; // High-voltage citrus lemon
+        p.pattern = '#ca8a04';
+        p.belly = '#fef9c3';
+      } else if (snake.codoms.enchi === 2) {
+        p.ground = '#d97706'; // Golden ochre
+        p.pattern = '#78350f';
+        p.patternType = 'banded';
+      } else if (snake.codoms.clown === 2) {
+        p.ground = '#fcd34d'; // Tan gold
+        p.pattern = '#78350f';
+        p.patternType = 'dorsal_stripe';
+      }
+
+      // Grail Overrides
+      GRAILS.forEach(g => {
+        if (g.check(snake)) {
+          p.ground = g.ground;
+          p.pattern = g.pattern;
+          p.belly = g.belly;
+          p.eye = g.eye;
+          if (g.isPiebald) p.isPiebald = true;
+        }
+      });
+
+      return p;
+    }
+
+    function drawSerpentAnatomy(ctx, w, h, snake, options = {}) {
+      ctx.clearRect(0, 0, w, h);
+      const pal = getSerpentVisualPalette(snake);
+      const isFacingLeft = options.facingLeft || false;
+      const time = options.time || 0;
+
+      ctx.save();
+      if (isFacingLeft) {
+        ctx.translate(w, 0);
+        ctx.scale(-1, 1);
+      }
+
+      // Spine interpolation: 50 smooth points along natural S-curve
+      const points = [];
+      const numPoints = 48;
+      const startX = w * 0.12;
+      const endX = w * 0.86;
+      const midY = h * 0.52;
+
+      for (let i = 0; i <= numPoints; i++) {
+        const t = i / numPoints;
+        const x = startX + t * (endX - startX);
+        const wave1 = Math.sin(t * Math.PI * 2.8 + time * 2) * (h * 0.22);
+        const wave2 = Math.cos(t * Math.PI * 1.4) * (h * 0.08);
+        const y = midY + wave1 + wave2;
+
+        // Radius tapering: Neck is thin, midbody thick, tail tapers to tip
+        let radius = 14 * (w / 320);
+        if (t < 0.15) {
+          radius = (6 + (t / 0.15) * 8) * (w / 320); // Neck
+        } else if (t > 0.7) {
+          const tailT = (t - 0.7) / 0.3;
+          radius = (14 - tailT * 11) * (w / 320); // Tail taper
+        }
+
+        points.push({ x, y, r: Math.max(2.5, radius), t });
+      }
+
+      // Draw Ventral Belly Shadow & Underbelly
+      ctx.lineWidth = 18 * (w / 320);
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.strokeStyle = pal.belly;
+      ctx.beginPath();
+      for (let i = 0; i < points.length; i++) {
+        const pt = points[i];
+        if (i === 0) ctx.moveTo(pt.x, pt.y + 2);
+        else ctx.lineTo(pt.x, pt.y + 2);
+      }
+      ctx.stroke();
+
+      // Draw Main Serpentine Body Dorsal
+      ctx.lineWidth = 14 * (w / 320);
+      ctx.strokeStyle = pal.ground;
+      ctx.beginPath();
+      for (let i = 0; i < points.length; i++) {
+        const pt = points[i];
+        if (i === 0) ctx.moveTo(pt.x, pt.y);
+        else ctx.lineTo(pt.x, pt.y);
+      }
+      ctx.stroke();
+
+      // Draw Morph Patterning (Hourglasses / Saddles / Chevrons / Dorsal Stripe)
+      if (pal.patternType === 'dorsal_stripe') {
+        // Continuous Clown dorsal stripe
+        ctx.lineWidth = 4 * (w / 320);
+        ctx.strokeStyle = pal.pattern;
+        ctx.beginPath();
+        for (let i = 3; i < points.length - 4; i++) {
+          if (i === 3) ctx.moveTo(points[i].x, points[i].y);
+          else ctx.lineTo(points[i].x, points[i].y);
+        }
+        ctx.stroke();
+      } else if (pal.patternType !== 'solid') {
+        // Dorsal saddle blotches along body
+        for (let i = 4; i < points.length - 4; i += 3) {
+          const pt = points[i];
+          ctx.fillStyle = pal.pattern;
+          ctx.beginPath();
+          if (pal.patternType === 'hourglass') {
+            ctx.ellipse(pt.x, pt.y, pt.r * 0.9, pt.r * 0.55, 0.3, 0, Math.PI * 2);
+          } else if (pal.patternType === 'chevron') {
+            ctx.moveTo(pt.x - 4, pt.y - pt.r * 0.8);
+            ctx.lineTo(pt.x + 3, pt.y);
+            ctx.lineTo(pt.x - 4, pt.y + pt.r * 0.8);
+            ctx.lineWidth = 3.5 * (w / 320);
+            ctx.strokeStyle = pal.pattern;
+            ctx.stroke();
+            continue;
+          } else {
+            ctx.arc(pt.x, pt.y, pt.r * 0.75, 0, Math.PI * 2);
+          }
+          ctx.fill();
+        }
+      }
+
+      // Piebald Morph: Pure White Unpigmented Mantle Patches
+      if (pal.isPiebald) {
+        ctx.fillStyle = '#ffffff';
+        const whiteSections = [
+          { start: 0.22, end: 0.38 },
+          { start: 0.58, end: 0.74 }
+        ];
+        whiteSections.forEach(sec => {
+          ctx.beginPath();
+          let started = false;
+          for (let i = 0; i < points.length; i++) {
+            const pt = points[i];
+            if (pt.t >= sec.start && pt.t <= sec.end) {
+              if (!started) {
+                ctx.arc(pt.x, pt.y, pt.r * 1.15, 0, Math.PI * 2);
+                started = true;
+              } else {
+                ctx.arc(pt.x, pt.y, pt.r * 1.15, 0, Math.PI * 2);
+              }
+            }
+          }
+          ctx.fill();
+        });
+      }
+
+      // Rattlesnake Tail Segment
+      if (pal.hasRattle) {
+        const tailEnd = points[points.length - 1];
+        ctx.fillStyle = '#ca8a04';
+        for (let r = 0; r < 4; r++) {
+          ctx.beginPath();
+          ctx.arc(tailEnd.x + (r * 3.5), tailEnd.y, 3 - r * 0.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      // Head Rendering (Viperid coffin-head or Cobra Hood)
+      const headPt = points[0];
+      const headAngle = Math.atan2(points[0].y - points[2].y, points[0].x - points[2].x);
+
+      ctx.save();
+      ctx.translate(headPt.x, headPt.y);
+      ctx.rotate(headAngle);
+
+      // Flared Cobra Hood (Tier 6, Tier 9)
+      if (pal.headType === 'cobra' || pal.headType === 'king_cobra') {
+        ctx.fillStyle = pal.ground;
+        ctx.beginPath();
+        ctx.ellipse(-8, 0, 14 * (w / 320), 18 * (w / 320), 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = pal.pattern;
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+      }
+
+      // Triangular Viper / Coffin Head
+      ctx.fillStyle = pal.ground;
+      ctx.beginPath();
+      ctx.moveTo(12, 0); // Snout
+      ctx.lineTo(-4, -9); // Left jaw
+      ctx.lineTo(-8, -4);
+      ctx.lineTo(-8, 4);
+      ctx.lineTo(-4, 9);  // Right jaw
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#00000033';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      // Serpent Eye (Vertical slit pupil)
+      ctx.fillStyle = pal.eye;
+      ctx.beginPath();
+      ctx.arc(3, -4.5, 2.5, 0, Math.PI * 2);
+      ctx.arc(3, 4.5, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Slit Pupil
+      ctx.fillStyle = (pal.eye === '#ef4444' || pal.eye === '#f43f5e') ? '#450a0a' : '#000000';
+      ctx.fillRect(2.7, -6, 0.8, 3);
+      ctx.fillRect(2.7, 3, 0.8, 3);
+
+      // Animated Forked Tongue Flick
+      const tongueFlick = Math.sin(time * 8) > 0.2;
+      if (tongueFlick || options.alwaysTongue) {
+        ctx.strokeStyle = pal.blackMouth ? '#09090b' : '#dc2626';
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        ctx.moveTo(12, 0);
+        ctx.lineTo(20, 0);
+        ctx.lineTo(24, -3);
+        ctx.moveTo(20, 0);
+        ctx.lineTo(24, 3);
+        ctx.stroke();
+      }
+
+      ctx.restore();
+      ctx.restore();
+    }
+
+    // 7. TOAST NOTIFICATIONS
+    function showToast(msg, type = 'info') {
+      const c = document.getElementById('toast-container');
+      const t = document.createElement('div');
+      t.className = `toast ${type === 'gold' ? 'toast-gold' : type === 'crimson' ? 'toast-crimson' : ''}`;
+      t.textContent = msg;
+      c.appendChild(t);
+      SoundFX.alert();
+      setTimeout(() => {
+        t.style.opacity = '0';
+        t.style.transform = 'translateY(-10px)';
+        t.style.transition = 'all 0.25s ease';
+        setTimeout(() => t.remove(), 250);
+      }, 3500);
+    }
+
+    // 8. TOP TAB NAVIGATION
+    function switchTab(tabId) {
+      document.querySelectorAll('.view-panel').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.top-nav-btn').forEach(el => el.classList.remove('active'));
+
+      const target = document.getElementById(`view-${tabId}`);
+      if (target) target.classList.add('active');
+
+      const btn = Array.from(document.querySelectorAll('.top-nav-btn')).find(b => b.getAttribute('onclick')?.includes(tabId));
+      if (btn) btn.classList.add('active');
+
+      if (tabId === 'vault') renderRoster();
+      if (tabId === 'breeding') renderBreedingView();
+      if (tabId === 'arena') prepareArenaView();
+      if (tabId === 'auction') renderAuctionLanes();
+      if (tabId === 'clearance') renderClearanceView();
+      if (tabId === 'wondertrade') renderWonderTradeView();
+      if (tabId === 'codex') renderCodex();
+    }
+
+    // 9. HEADER STATS
+    function updateHeaderStats() {
+      document.getElementById('res-cash').textContent = `$${State.cash.toLocaleString()}`;
+      document.getElementById('res-day').textContent = State.day;
+      document.getElementById('res-food').textContent = State.food;
+      document.getElementById('res-meds').textContent = State.meds;
+      document.getElementById('res-polish').textContent = State.polish;
+      document.getElementById('res-snakes-count').textContent = State.roster.length;
+      document.getElementById('top-clearance-count').textContent = clearanceDeals.length;
+    }
+
+    // 10. ROSTER VAULT RENDERING
+    function renderRoster() {
+      const grid = document.getElementById('roster-grid');
+      const sortVal = document.getElementById('sort-roster').value;
+      const tierVal = document.getElementById('filter-tier').value;
+      const sexVal = document.getElementById('filter-sex').value;
+
+      let list = [...State.roster];
+
+      if (tierVal !== 'all') list = list.filter(s => s.tier === parseInt(tierVal));
+      if (sexVal !== 'all') list = list.filter(s => s.sex === sexVal);
+
+      list.sort((a, b) => {
+        const valA = calculateValuation(a);
+        const valB = calculateValuation(b);
+        const ivA = a.ivs.vp + a.ivs.ss + a.ivs.sd + a.ivs.cp + a.ivs.ra;
+        const ivB = b.ivs.vp + b.ivs.ss + b.ivs.sd + b.ivs.cp + b.ivs.ra;
+        if (sortVal === 'val-desc') return valB - valA;
+        if (sortVal === 'val-asc') return valA - valB;
+        if (sortVal === 'tier-desc') return b.tier - a.tier;
+        if (sortVal === 'tier-asc') return a.tier - b.tier;
+        if (sortVal === 'iv-desc') return ivB - ivA;
+        if (sortVal === 'recency') return b.id - a.id;
+        return 0;
+      });
+
+      grid.innerHTML = '';
+      if (list.length === 0) {
+        grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:40px; color:var(--text-muted);">No serpents found in roster matching filter.</div>`;
+        return;
+      }
+
+      list.forEach(snake => {
+        const val = calculateValuation(snake);
+        const tierInfo = TIERS[snake.tier];
+        const isGrailUnit = GRAILS.some(g => g.check(snake));
+
+        const card = document.createElement('div');
+        card.className = `snake-card ${isGrailUnit ? 'grail-border' : ''}`;
+
+        let tagsHtml = '';
+        snake.recessives.forEach(r => {
+          const recObj = RECESSIVES.find(x => x.id === r.id);
+          const lbl = r.state === 'visual' ? recObj.name : `Het ${recObj.name}`;
+          tagsHtml += `<span class="badge ${r.state === 'visual' ? 'badge-gold' : 'badge-emerald'}">${lbl}</span>`;
+        });
+
+        Object.keys(snake.codoms).forEach(k => {
+          const v = snake.codoms[k];
+          const cObj = CODOMS.find(x => x.id === k);
+          if (v === 1) tagsHtml += `<span class="badge badge-emerald">${cObj.norm}</span>`;
+          if (v === 2) tagsHtml += `<span class="badge badge-gold">${cObj.super}</span>`;
+        });
+
+        if (isGrailUnit) {
+          tagsHtml += `<span class="badge badge-grail">🌟 APEX GRAIL</span>`;
+        }
+
+        card.innerHTML = `
+          <div class="snake-card-header">
+            <div>
+              <div class="snake-name">
+                <span class="snake-sex ${snake.sex === 'M' ? 'sex-m' : 'sex-f'}">${snake.sex === 'M' ? '♂' : '♀'}</span>
+                <span>${snake.name}</span>
+              </div>
+              <div class="snake-meta">
+                <span>Tier ${snake.tier}: ${tierInfo.name}</span>
+                <span>• ${snake.origin}</span>
+              </div>
+            </div>
+            <span class="badge ${snake.tier === 10 ? 'badge-tier-x' : 'badge-tier'}">T${snake.tier}</span>
+          </div>
+
+          <canvas class="serpent-canvas" id="canvas-serpent-${snake.id}"></canvas>
+
+          <div class="gene-tags">${tagsHtml || '<span style="font-size:10px; color:var(--text-muted);">Wild-type Phenotype</span>'}</div>
+
+          <div class="iv-grid">
+            <div class="iv-item">
+              <div class="iv-label"><span>VENOM:</span><span class="${getIVGrade(snake.ivs.vp).cls}">${snake.ivs.vp}</span></div>
+              <div class="iv-bar-bg"><div class="iv-bar-fill" style="width:${snake.ivs.vp}%; background:#10b981;"></div></div>
+            </div>
+            <div class="iv-item">
+              <div class="iv-label"><span>SPEED:</span><span class="${getIVGrade(snake.ivs.ss).cls}">${snake.ivs.ss}</span></div>
+              <div class="iv-bar-bg"><div class="iv-bar-fill" style="width:${snake.ivs.ss}%; background:#38bdf8;"></div></div>
+            </div>
+            <div class="iv-item">
+              <div class="iv-label"><span>SCALES:</span><span class="${getIVGrade(snake.ivs.sd).cls}">${snake.ivs.sd}</span></div>
+              <div class="iv-bar-bg"><div class="iv-bar-fill" style="width:${snake.ivs.sd}%; background:#f59e0b;"></div></div>
+            </div>
+            <div class="iv-item">
+              <div class="iv-label"><span>REFLEX:</span><span class="${getIVGrade(snake.ivs.ra).cls}">${snake.ivs.ra}</span></div>
+              <div class="iv-bar-bg"><div class="iv-bar-fill" style="width:${snake.ivs.ra}%; background:#ec4899;"></div></div>
+            </div>
+          </div>
+
+          <div class="snake-card-footer">
+            <div>
+              <div style="font-size:10px; color:var(--text-muted); font-family:var(--font-mono);">VALUATION:</div>
+              <div class="snake-val">$${val.toLocaleString()}</div>
+            </div>
+            <div style="display:flex; gap:6px;">
+              <button class="btn btn-sm" onclick="openDossierModal(${snake.id})">Dossier</button>
+              <button class="btn btn-sm btn-crimson" onclick="quickWholesaleSell(${snake.id})">Quick Sell $${Math.round(val * 0.7).toLocaleString()}</button>
+            </div>
+          </div>
+        `;
+
+        grid.appendChild(card);
+
+        // Draw realistic serpent anatomy
+        setTimeout(() => {
+          const c = document.getElementById(`canvas-serpent-${snake.id}`);
+          if (c) {
+            c.width = c.clientWidth * window.devicePixelRatio || 320;
+            c.height = c.clientHeight * window.devicePixelRatio || 84;
+            drawSerpentAnatomy(c.getContext('2d'), c.width, c.height, snake, { time: snake.id * 0.5 });
+          }
+        }, 15);
+      });
+    }
+
+    // 11. WHOLESALE SELL & DOSSIER MODAL
+    function quickWholesaleSell(snakeId) {
+      const idx = State.roster.findIndex(s => s.id === snakeId);
+      if (idx === -1) return;
+      const snake = State.roster[idx];
+      const val = calculateValuation(snake);
+      const wholesale = Math.round(val * 0.7);
+
+      State.cash += wholesale;
+      State.roster.splice(idx, 1);
+      SoundFX.cash();
+      showToast(`Liquidated ${snake.name} for +$${wholesale.toLocaleString()}!`, 'gold');
+      saveState();
+      renderRoster();
+    }
+
+    function openDossierModal(snakeId) {
+      const snake = State.roster.find(s => s.id === snakeId);
+      if (!snake) return;
+
+      const title = document.getElementById('dossier-title');
+      const body = document.getElementById('dossier-content');
+      const actions = document.getElementById('dossier-actions');
+
+      title.textContent = `DOSSIER // ${snake.name.toUpperCase()} (ID: #${snake.id})`;
+      const val = calculateValuation(snake);
+      const tierInfo = TIERS[snake.tier];
+
+      let recHtml = snake.recessives.map(r => `• ${r.state.toUpperCase()}: ${r.id.toUpperCase()}`).join('<br>') || 'None';
+      let codHtml = Object.keys(snake.codoms).filter(k => snake.codoms[k] > 0).map(k => {
+        const count = snake.codoms[k];
+        return `• ${count === 2 ? 'SUPER ' : ''}${k.toUpperCase()}`;
+      }).join('<br>') || 'None';
+
+      body.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <div>
+            <div style="font-size:16px; font-weight:800; color:#fff;">${snake.name}</div>
+            <div style="font-size:12px; color:var(--text-muted);">Tier ${snake.tier} — ${tierInfo.name}</div>
+          </div>
+          <div class="snake-val" style="font-size:18px;">$${val.toLocaleString()}</div>
+        </div>
+
+        <div style="background:#09120e; border:1px solid #1a2f24; border-radius:8px; padding:12px; margin-bottom:12px; font-size:12px;">
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+            <div><strong>SEX:</strong> ${snake.sex === 'M' ? '♂ Male (Sire)' : '♀ Female (Dam)'}</div>
+            <div><strong>ORIGIN:</strong> ${snake.origin}</div>
+            <div><strong>SATIETY:</strong> ${snake.satiety}%</div>
+            <div><strong>HEALTH:</strong> ${snake.health}%</div>
+            <div><strong>RECORD:</strong> ${snake.wins}W - ${snake.losses}L</div>
+            <div><strong>POLISHED:</strong> ${snake.polished ? 'Yes (+30% Hype)' : 'No'}</div>
+          </div>
+        </div>
+
+        <div style="font-size:12px; margin-bottom:12px;">
+          <h4 style="color:var(--viper-gold); font-size:12px; margin-bottom:4px;">GENETIC PHENOTYPE & HETS:</h4>
+          <div style="background:#09120e; border:1px solid #1a2f24; border-radius:8px; padding:8px;">
+            <div style="color:var(--venom-emerald);">RECESSIVES:</div>
+            <div>${recHtml}</div>
+            <div style="color:var(--venom-emerald); margin-top:6px;">CODOMINANTS:</div>
+            <div>${codHtml}</div>
+          </div>
+        </div>
+
+        <div style="font-size:12px;">
+          <h4 style="color:var(--venom-emerald); font-size:12px; margin-bottom:4px;">COMBAT IV RATINGS:</h4>
+          <div class="iv-grid">
+            <div class="iv-item">
+              <div class="iv-label"><span>VENOM POTENCY:</span><span class="${getIVGrade(snake.ivs.vp).cls}">${snake.ivs.vp}</span></div>
+              <div class="iv-bar-bg"><div class="iv-bar-fill" style="width:${snake.ivs.vp}%; background:#10b981;"></div></div>
+            </div>
+            <div class="iv-item">
+              <div class="iv-label"><span>STRIKE SPEED:</span><span class="${getIVGrade(snake.ivs.ss).cls}">${snake.ivs.ss}</span></div>
+              <div class="iv-bar-bg"><div class="iv-bar-fill" style="width:${snake.ivs.ss}%; background:#38bdf8;"></div></div>
+            </div>
+            <div class="iv-item">
+              <div class="iv-label"><span>SCALE DENSITY:</span><span class="${getIVGrade(snake.ivs.sd).cls}">${snake.ivs.sd}</span></div>
+              <div class="iv-bar-bg"><div class="iv-bar-fill" style="width:${snake.ivs.sd}%; background:#f59e0b;"></div></div>
+            </div>
+            <div class="iv-item">
+              <div class="iv-label"><span>CONSTRICTION:</span><span class="${getIVGrade(snake.ivs.cp).cls}">${snake.ivs.cp}</span></div>
+              <div class="iv-bar-bg"><div class="iv-bar-fill" style="width:${snake.ivs.cp}%; background:#a855f7;"></div></div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      actions.innerHTML = `
+        <button class="btn btn-sm" onclick="feedSnake(${snake.id})">Feed (-1 Rat)</button>
+        <button class="btn btn-sm" onclick="healSnake(${snake.id})">Heal (-1 Med)</button>
+        <button class="btn btn-sm btn-gold" onclick="polishSnake(${snake.id})">Wax Polish (-1 Wax)</button>
+        <button class="btn btn-sm btn-crimson" onclick="quickWholesaleSell(${snake.id}); closeModal('modal-dossier');">Quick Sell $${Math.round(val * 0.7).toLocaleString()}</button>
+      `;
+
+      openModal('modal-dossier');
+    }
+
+    function feedSnake(snakeId) {
+      const s = State.roster.find(x => x.id === snakeId);
+      if (!s) return;
+      if (State.food < 1) {
+        showToast('Out of rodent rations! Buy more in Logistics.', 'crimson');
+        return;
+      }
+      State.food -= 1;
+      s.satiety = Math.min(100, s.satiety + 40);
+      s.energy = Math.min(100, s.energy + 25);
+      showToast(`Fed ${s.name} (+40 Satiety, +25 Energy)`, 'emerald');
+      saveState();
+      openDossierModal(snakeId);
+    }
+
+    function healSnake(snakeId) {
+      const s = State.roster.find(x => x.id === snakeId);
+      if (!s) return;
+      if (State.meds < 1) {
+        showToast('Out of antivenom serum! Buy more in Logistics.', 'crimson');
+        return;
+      }
+      State.meds -= 1;
+      s.health = 100;
+      showToast(`Treated ${s.name} with antivenom (Health: 100%)`, 'emerald');
+      saveState();
+      openDossierModal(snakeId);
+    }
+
+    function polishSnake(snakeId) {
+      const s = State.roster.find(x => x.id === snakeId);
+      if (!s) return;
+      if (State.polish < 1) {
+        showToast('Out of serpent wax polish! Buy more in Logistics.', 'crimson');
+        return;
+      }
+      if (s.polished) {
+        showToast('Serpent already has show polish applied!', 'info');
+        return;
+      }
+      State.polish -= 1;
+      s.polished = true;
+      SoundFX.hiss();
+      showToast(`Polished ${s.name}! Market & Auction hype boosted by +30%`, 'gold');
+      saveState();
+      openDossierModal(snakeId);
+    }
+
+    // 12. BREEDING LAIR & LIVE 1,000-TRIAL MONTE CARLO PUNNETT SIMULATOR
+    function simulateOffspring(sire, dam) {
+      let tier = Math.max(sire.tier, dam.tier);
+      if (tier < 10 && Math.random() < 0.22) tier += 1; // 22% progression leap
+
+      const sex = Math.random() < 0.5 ? 'M' : 'F';
+
+      // Mendelian Recessives
+      const childRecs = [];
+      RECESSIVES.forEach(rec => {
+        let sPass = isVisual(sire, rec.id) ? 1 : (isHet(sire, rec.id) && Math.random() < 0.5 ? 1 : 0);
+        let dPass = isVisual(dam, rec.id) ? 1 : (isHet(dam, rec.id) && Math.random() < 0.5 ? 1 : 0);
+        const sum = sPass + dPass;
+        if (sum === 2) childRecs.push({ id: rec.id, state: 'visual' });
+        else if (sum === 1) childRecs.push({ id: rec.id, state: 'het' });
+      });
+
+      // Codominants
+      const childCodoms = {};
+      CODOMS.forEach(cod => {
+        const sVal = sire.codoms[cod.id] || 0;
+        const dVal = dam.codoms[cod.id] || 0;
+        let sPass = sVal === 2 ? 1 : (sVal === 1 && Math.random() < 0.5 ? 1 : 0);
+        let dPass = dVal === 2 ? 1 : (dVal === 1 && Math.random() < 0.5 ? 1 : 0);
+        childCodoms[cod.id] = sPass + dPass;
+      });
+
+      // Combat IV inheritance
+      const childIVs = {};
+      ['vp', 'ss', 'sd', 'cp', 'ra'].forEach(k => {
+        const avg = (sire.ivs[k] + dam.ivs[k]) / 2;
+        let delta = Math.floor(Math.random() * 19) - 8;
+        if (Math.random() < 0.06) delta += 14;
+        let val = Math.round(avg + delta);
+        childIVs[k] = Math.max(15, Math.min(100, val));
+      });
+
+      return createSerpent({
+        tier,
+        sex,
+        origin: 'Ophiarium Lair',
+        recessives: childRecs,
+        codoms: childCodoms,
+        ivs: childIVs
+      });
+    }
+
+    function runMonteCarloPunnett(sire, dam, trials = 1000) {
+      const stats = { visuals: {}, supers: {}, grails: {}, avgTier: 0, avgIVTotal: 0 };
+      for (let i = 0; i < trials; i++) {
+        const off = simulateOffspring(sire, dam);
+        stats.avgTier += off.tier;
+        stats.avgIVTotal += (off.ivs.vp + off.ivs.ss + off.ivs.sd + off.ivs.cp + off.ivs.ra);
+
+        off.recessives.forEach(r => {
+          if (r.state === 'visual') stats.visuals[r.id] = (stats.visuals[r.id] || 0) + 1;
+        });
+
+        Object.keys(off.codoms).forEach(k => {
+          if (off.codoms[k] === 2) stats.supers[k] = (stats.supers[k] || 0) + 1;
+        });
+
+        GRAILS.forEach(g => {
+          if (g.check(off)) stats.grails[g.name] = (stats.grails[g.name] || 0) + 1;
+        });
+      }
+
+      stats.avgTier = (stats.avgTier / trials).toFixed(1);
+      stats.avgIVTotal = Math.round(stats.avgIVTotal / trials);
+
+      Object.keys(stats.visuals).forEach(k => stats.visuals[k] = ((stats.visuals[k] / trials) * 100).toFixed(1));
+      Object.keys(stats.supers).forEach(k => stats.supers[k] = ((stats.supers[k] / trials) * 100).toFixed(1));
+      Object.keys(stats.grails).forEach(k => stats.grails[k] = ((stats.grails[k] / trials) * 100).toFixed(1));
+
+      return stats;
+    }
+
+    function renderBreedingView() {
+      const sireSel = document.getElementById('breed-sire-select');
+      const damSel = document.getElementById('breed-dam-select');
+
+      sireSel.innerHTML = '<option value="">-- Choose Sire (♂) --</option>';
+      damSel.innerHTML = '<option value="">-- Choose Dam (♀) --</option>';
+
+      State.roster.forEach(s => {
+        const opt = `<option value="${s.id}">${s.name} (T${s.tier} — Val: $${calculateValuation(s)})</option>`;
+        if (s.sex === 'M') sireSel.innerHTML += opt;
+        if (s.sex === 'F') damSel.innerHTML += opt;
+      });
+
+      renderIncubationSlots();
+      updatePunnettCalculation();
+    }
+
+    function updatePunnettCalculation() {
+      const sireId = parseInt(document.getElementById('breed-sire-select').value);
+      const damId = parseInt(document.getElementById('breed-dam-select').value);
+      const resBox = document.getElementById('punnett-results');
+      const oddsGrid = document.getElementById('punnett-odds-breakdown');
+
+      if (!sireId || !damId) {
+        resBox.style.display = 'none';
+        return;
+      }
+
+      const sire = State.roster.find(s => s.id === sireId);
+      const dam = State.roster.find(s => s.id === damId);
+      if (!sire || !dam) return;
+
+      const stats = runMonteCarloPunnett(sire, dam, 1000);
+      resBox.style.display = 'block';
+      oddsGrid.innerHTML = `
+        <div style="background:#111b15; padding:8px; border-radius:6px;">
+          <div style="color:var(--text-muted); font-size:10px;">EXP. TIER & IVS:</div>
+          <div style="font-weight:700; color:#fff;">Avg T${stats.avgTier} / ${stats.avgIVTotal} Total</div>
+        </div>
+      `;
+
+      Object.keys(stats.visuals).forEach(k => {
+        const rec = RECESSIVES.find(r => r.id === k);
+        oddsGrid.innerHTML += `
+          <div style="background:#111b15; padding:8px; border-radius:6px;">
+            <div style="color:var(--venom-emerald); font-size:10px;">VISUAL ${rec.name.toUpperCase()}:</div>
+            <div style="font-weight:800; color:#fff;">${stats.visuals[k]}%</div>
+          </div>
+        `;
+      });
+
+      Object.keys(stats.supers).forEach(k => {
+        const c = CODOMS.find(x => x.id === k);
+        oddsGrid.innerHTML += `
+          <div style="background:#111b15; padding:8px; border-radius:6px;">
+            <div style="color:var(--viper-gold); font-size:10px;">${c.super.toUpperCase()}:</div>
+            <div style="font-weight:800; color:#fff;">${stats.supers[k]}%</div>
+          </div>
+        `;
+      });
+
+      Object.keys(stats.grails).forEach(k => {
+        oddsGrid.innerHTML += `
+          <div style="background:#281e05; border:1px solid #f59e0b; padding:8px; border-radius:6px;">
+            <div style="color:var(--viper-gold); font-size:10px;">🌟 GRAIL: ${k.toUpperCase()}:</div>
+            <div style="font-weight:800; color:#fde047;">${stats.grails[k]}%</div>
+          </div>
+        `;
+      });
+    }
+
+    function autoPairOptimal() {
+      const males = State.roster.filter(s => s.sex === 'M').sort((a,b) => b.tier - a.tier);
+      const females = State.roster.filter(s => s.sex === 'F').sort((a,b) => b.tier - a.tier);
+
+      if (males.length === 0 || females.length === 0) {
+        showToast('Need at least 1 Sire and 1 Dam in roster!', 'crimson');
+        return;
+      }
+
+      document.getElementById('breed-sire-select').value = males[0].id;
+      document.getElementById('breed-dam-select').value = females[0].id;
+      updatePunnettCalculation();
+      showToast(`Auto-paired ${males[0].name} (♂) with ${females[0].name} (♀)!`, 'gold');
+    }
+
+    function initiateBreedingClutch() {
+      const sireId = parseInt(document.getElementById('breed-sire-select').value);
+      const damId = parseInt(document.getElementById('breed-dam-select').value);
+
+      if (!sireId || !damId) {
+        showToast('Please select both a Sire and a Dam!', 'crimson');
+        return;
+      }
+
+      const freeIdx = State.incubators.findIndex(s => s === null);
+      if (freeIdx === -1) {
+        showToast('All 5 incubation nursery chambers are full!', 'crimson');
+        return;
+      }
+
+      const sire = State.roster.find(s => s.id === sireId);
+      const dam = State.roster.find(s => s.id === damId);
+      const embryo = simulateOffspring(sire, dam);
+
+      State.incubators[freeIdx] = {
+        slot: freeIdx,
+        sireName: sire.name,
+        damName: dam.name,
+        sireTier: sire.tier,
+        damTier: dam.tier,
+        dayStarted: State.day,
+        daysRemaining: 4,
+        candled: false,
+        embryo: embryo
+      };
+
+      SoundFX.hiss();
+      showToast(`Clutch initialized in Chamber #${freeIdx + 1}! (4-day cycle)`, 'emerald');
+      saveState();
+      renderBreedingView();
+    }
+
+    function renderIncubationSlots() {
+      const container = document.getElementById('incubator-slots-grid');
+      container.innerHTML = '';
+
+      State.incubators.forEach((slot, idx) => {
+        const card = document.createElement('div');
+        card.style.background = '#0a120e';
+        card.style.border = '1px solid #1a2f24';
+        card.style.borderRadius = '10px';
+        card.style.padding = '12px';
+
+        if (!slot) {
+          card.innerHTML = `
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+              <span class="mono" style="font-size:12px; color:var(--text-muted);">CHAMBER #${idx + 1}</span>
+              <span class="badge" style="background:#13221b; color:var(--text-muted);">VACANT</span>
+            </div>
+            <div style="text-align:center; padding:24px 0; color:var(--text-muted); font-size:12px;">
+              Chamber Ready for Clutch
+            </div>
+          `;
+        } else {
+          const progressPct = ((4 - slot.daysRemaining) / 4) * 100;
+          card.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <span class="mono" style="font-size:12px; color:var(--viper-gold);">CHAMBER #${idx + 1}</span>
+              <span class="badge badge-emerald">${slot.daysRemaining}d REMAINING</span>
+            </div>
+            <div style="font-size:13px; font-weight:700; color:#fff; margin-bottom:2px;">
+              ${slot.sireName} × ${slot.damName}
+            </div>
+            <div style="font-size:11px; color:var(--text-muted); margin-bottom:8px;">
+              T${slot.sireTier} / T${slot.damTier} Cross
+            </div>
+
+            <div class="gauge" style="margin-bottom:10px;">
+              <div class="gauge-fill" style="width:${progressPct}%; background:var(--venom-emerald);"></div>
+            </div>
+
+            <div style="display:flex; gap:6px;">
+              <button class="btn btn-sm btn-gold" style="flex:1;" onclick="inspectCandling(${idx})">
+                🔬 Candle (Day 2)
+              </button>
+              <button class="btn btn-sm btn-crimson" onclick="cullIncubatorSlot(${idx})" title="Abort clutch">✕</button>
+            </div>
+          `;
+        }
+        container.appendChild(card);
+      });
+    }
+
+    let currentCandlingSlot = null;
+    function inspectCandling(slotIdx) {
+      const slot = State.incubators[slotIdx];
+      if (!slot) return;
+      currentCandlingSlot = slotIdx;
+
+      slot.candled = true;
+      const emb = slot.embryo;
+      const previewText = document.getElementById('candling-embryo-preview');
+      const details = document.getElementById('candling-details');
+
+      SoundFX.alert();
+      const isGrail = GRAILS.some(g => g.check(emb));
+      previewText.innerHTML = isGrail
+        ? `<span style="color:var(--viper-gold);">🌟 ULTRA-RARE GRAIL EMBRYO DETECTED!</span>`
+        : `<span>GENOTYPE: TIER ${emb.tier} (${TIERS[emb.tier].name})</span>`;
+
+      let morphs = [];
+      emb.recessives.forEach(r => morphs.push(r.state === 'visual' ? `Visual ${r.id.toUpperCase()}` : `Het ${r.id}`));
+      Object.keys(emb.codoms).forEach(k => {
+        if (emb.codoms[k] === 1) morphs.push(k.toUpperCase());
+        if (emb.codoms[k] === 2) morphs.push(`SUPER ${k.toUpperCase()}`);
+      });
+
+      details.innerHTML = `
+        <div style="margin-bottom:8px;"><strong>PREDICTED MORPHS:</strong> ${morphs.join(', ') || 'Normal'}</div>
+        <div style="margin-bottom:8px;"><strong>SEX CONFIRMATION:</strong> ${emb.sex === 'M' ? '♂ Male' : '♀ Female'}</div>
+        <div><strong>ESTIMATED IV PROFILE:</strong> VP: ${emb.ivs.vp} | SS: ${emb.ivs.ss} | SD: ${emb.ivs.sd} | RA: ${emb.ivs.ra}</div>
+      `;
+
+      openModal('modal-candling');
+    }
+
+    function cullInspectedEgg() {
+      if (currentCandlingSlot !== null) {
+        cullIncubatorSlot(currentCandlingSlot);
+        closeModal('modal-candling');
+      }
+    }
+
+    function cullIncubatorSlot(idx) {
+      State.incubators[idx] = null;
+      showToast(`Chamber #${idx + 1} culled.`, 'info');
+      saveState();
+      renderBreedingView();
+    }
+
+    // 13. 2D MICRO-ARENA COLOSSEUM ENGINE
+    let arenaAnimId = null;
+    let arenaSpeed = 1;
+    let arenaRunning = false;
+    let playerFighter = null;
+    let rivalFighter = null;
+    let combatLogTexts = [];
+
+    function prepareArenaView() {
+      const champSel = document.getElementById('arena-champion-select');
+      champSel.innerHTML = '<option value="">-- Choose Champion --</option>';
+
+      State.roster.forEach(s => {
+        champSel.innerHTML += `<option value="${s.id}">${s.name} (T${s.tier} — Atk:${TIERS[s.tier].atk})</option>`;
+      });
+
+      generateRivalSerpent();
+      initArenaCanvas();
+    }
+
+    function setupArenaCombatant() {
+      const champId = parseInt(document.getElementById('arena-champion-select').value);
+      if (!champId) return;
+      const s = State.roster.find(x => x.id === champId);
+      if (!s) return;
+
+      const t = TIERS[s.tier];
+      playerFighter = {
+        data: s,
+        name: s.name,
+        maxHp: t.hp + Math.round(s.ivs.sd * 2.5),
+        hp: t.hp + Math.round(s.ivs.sd * 2.5),
+        atk: t.atk + Math.round(s.ivs.vp * 1.5),
+        def: t.def + Math.round(s.ivs.sd * 1.0),
+        speed: s.ivs.ss,
+        reflex: s.ivs.ra,
+        stamina: 100,
+        stance: 'Aggressive',
+        venomDot: 0
+      };
+
+      document.getElementById('player-hud-name').textContent = playerFighter.name;
+      updateArenaHud();
+      drawArenaFrame();
+    }
+
+    function generateRivalSerpent() {
+      const diff = parseInt(document.getElementById('arena-difficulty-select').value);
+      const names = ["Shadow Wyrm", "Crimson Taipan", "Pit Strangler", "Void Sovereign"];
+      const baseTier = Math.min(10, diff * 2 + 1);
+      const t = TIERS[baseTier];
+
+      // Generate rival fake snake object for accurate anatomy drawing
+      const rivalSnakeData = createSerpent({
+        tier: baseTier,
+        name: names[diff - 1] || 'Syndicate Viper',
+        codoms: { pastel: diff > 2 ? 1 : 0 },
+        recessives: diff === 4 ? [{ id: 'sunset', state: 'visual' }] : []
+      });
+
+      rivalFighter = {
+        data: rivalSnakeData,
+        name: rivalSnakeData.name,
+        tier: baseTier,
+        maxHp: t.hp * 1.1,
+        hp: t.hp * 1.1,
+        atk: t.atk * 1.05,
+        def: t.def * 1.0,
+        speed: 50 + diff * 10,
+        reflex: 50 + diff * 10,
+        stamina: 100,
+        stance: 'Counter',
+        venomDot: 0
+      };
+
+      document.getElementById('rival-hud-name').textContent = rivalFighter.name;
+      updateArenaHud();
+      drawArenaFrame();
+    }
+
+    function setStance(stance) {
+      if (!playerFighter) return;
+      playerFighter.stance = stance;
+      document.getElementById('player-hud-stance').textContent = stance.toUpperCase();
+      showToast(`Stance set to ${stance}!`, 'info');
+    }
+
+    function setArenaSpeed(spd) {
+      arenaSpeed = spd;
+      document.getElementById('btn-speed-1x').style.borderColor = spd === 1 ? 'var(--venom-emerald)' : 'var(--border-dark)';
+      document.getElementById('btn-speed-3x').style.borderColor = spd === 3 ? 'var(--venom-emerald)' : 'var(--border-dark)';
+    }
+
+    function initArenaCanvas() {
+      const c = document.getElementById('arena-canvas');
+      const rect = c.parentElement.getBoundingClientRect();
+      c.width = rect.width * window.devicePixelRatio;
+      c.height = 240 * window.devicePixelRatio;
+      drawArenaFrame();
+    }
+
+    function startArenaMatch() {
+      if (!playerFighter) {
+        showToast('Please choose a champion first!', 'crimson');
+        return;
+      }
+      if (arenaRunning) return;
+
+      arenaRunning = true;
+      document.getElementById('btn-start-arena').textContent = '⚔️ BATTLING...';
+      document.getElementById('btn-start-arena').classList.remove('btn-emerald');
+      document.getElementById('btn-start-arena').classList.add('btn-crimson');
+
+      combatLogTexts = [];
+      let lastTime = performance.now();
+
+      function loop(now) {
+        if (!arenaRunning) return;
+        const dt = Math.min(0.1, (now - lastTime) / 1000) * arenaSpeed;
+        lastTime = now;
+
+        updateArenaCombat(dt);
+        drawArenaFrame(now / 1000);
+
+        if (arenaRunning) {
+          arenaAnimId = requestAnimationFrame(loop);
+        }
+      }
+      arenaAnimId = requestAnimationFrame(loop);
+    }
+
+    function updateArenaCombat(dt) {
+      if (!playerFighter || !rivalFighter) return;
+
+      if (State.godArena) playerFighter.hp = playerFighter.maxHp;
+
+      playerFighter.stamina = Math.min(100, playerFighter.stamina + 35 * dt);
+      rivalFighter.stamina = Math.min(100, rivalFighter.stamina + 30 * dt);
+
+      if (playerFighter.stamina >= 100) {
+        playerFighter.stamina = 0;
+        executeStrike(playerFighter, rivalFighter);
+      }
+
+      if (rivalFighter.stamina >= 100) {
+        rivalFighter.stamina = 0;
+        executeStrike(rivalFighter, playerFighter);
+      }
+
+      if (rivalFighter.venomDot > 0) {
+        rivalFighter.hp -= 8 * dt;
+        rivalFighter.venomDot -= dt;
+      }
+      if (playerFighter.venomDot > 0 && !State.godArena) {
+        playerFighter.hp -= 6 * dt;
+        playerFighter.venomDot -= dt;
+      }
+
+      combatLogTexts.forEach(t => {
+        t.y -= 25 * dt;
+        t.life -= dt;
+      });
+      combatLogTexts = combatLogTexts.filter(t => t.life > 0);
+
+      updateArenaHud();
+
+      if (rivalFighter.hp <= 0) resolveArenaEnd(true);
+      else if (playerFighter.hp <= 0) resolveArenaEnd(false);
+    }
+
+    function executeStrike(attacker, defender) {
+      SoundFX.strike();
+
+      let dmgMult = attacker.stance === 'Aggressive' ? 1.3 : (attacker.stance === 'Defensive' ? 0.8 : 1.0);
+      let defMult = defender.stance === 'Defensive' ? 1.4 : 1.0;
+      let isCrit = Math.random() < (attacker.stance === 'Counter' ? 0.35 : 0.12);
+
+      const dodgeChance = (defender.reflex / 300) + (defender.stance === 'Counter' ? 0.25 : 0.05);
+      if (Math.random() < dodgeChance) {
+        combatLogTexts.push({ text: 'PARRY!', x: defender === rivalFighter ? 240 : 80, y: 120, col: '#38bdf8', life: 0.8 });
+        SoundFX.hiss();
+        return;
+      }
+
+      let dmg = Math.max(8, (attacker.atk * dmgMult) - (defender.def * defMult * 0.35));
+      if (isCrit) dmg *= 1.8;
+      dmg = Math.round(dmg);
+
+      defender.hp -= dmg;
+      defender.venomDot = 3;
+
+      combatLogTexts.push({
+        text: isCrit ? `CRIT! -${dmg}` : `-${dmg}`,
+        x: defender === rivalFighter ? 240 : 80,
+        y: 110,
+        col: isCrit ? '#f59e0b' : '#ef4444',
+        life: 0.9
+      });
+    }
+
+    function resolveArenaEnd(playerWon) {
+      arenaRunning = false;
+      cancelAnimationFrame(arenaAnimId);
+
+      document.getElementById('btn-start-arena').textContent = '⚔️ ENGAGE DUEL';
+      document.getElementById('btn-start-arena').classList.add('btn-emerald');
+      document.getElementById('btn-start-arena').classList.remove('btn-crimson');
+
+      const diff = parseInt(document.getElementById('arena-difficulty-select').value);
+      const purses = [400, 1200, 3500, 12000];
+      const purse = purses[diff - 1] || 500;
+
+      if (playerWon) {
+        SoundFX.fanfare();
+        State.cash += purse;
+        playerFighter.data.wins += 1;
+        if (Math.random() < 0.4 && playerFighter.data.ivs.ss < 100) playerFighter.data.ivs.ss += 1;
+        showToast(`🏆 VICTORY! Purse awarded: +$${purse.toLocaleString()}`, 'gold');
+      } else {
+        SoundFX.hiss();
+        playerFighter.data.losses += 1;
+        playerFighter.data.health = Math.max(10, playerFighter.data.health - 25);
+        showToast(`DEFEATED! Champion wounded (-25 Health)`, 'crimson');
+      }
+
+      saveState();
+      updateArenaHud();
+    }
+
+    function instantResolveArena() {
+      if (!playerFighter) return;
+      if (!arenaRunning) startArenaMatch();
+      let steps = 0;
+      while (arenaRunning && steps < 300) {
+        updateArenaCombat(0.08);
+        steps++;
+      }
+      drawArenaFrame();
+    }
+
+    function updateArenaHud() {
+      if (!playerFighter || !rivalFighter) return;
+      const pPct = Math.max(0, (playerFighter.hp / playerFighter.maxHp) * 100);
+      const rPct = Math.max(0, (rivalFighter.hp / rivalFighter.maxHp) * 100);
+
+      document.getElementById('player-hp-bar').style.width = `${pPct}%`;
+      document.getElementById('rival-hp-bar').style.width = `${rPct}%`;
+
+      document.getElementById('player-hp-text').textContent = `${Math.round(playerFighter.hp)}/${Math.round(playerFighter.maxHp)}`;
+      document.getElementById('rival-hp-text').textContent = `${Math.round(rivalFighter.hp)}/${Math.round(rivalFighter.maxHp)}`;
+
+      document.getElementById('player-sta-text').textContent = `${Math.round(playerFighter.stamina)}%`;
+      document.getElementById('rival-sta-text').textContent = `${Math.round(rivalFighter.stamina)}%`;
+    }
+
+    function drawArenaFrame(time = 0) {
+      const c = document.getElementById('arena-canvas');
+      if (!c) return;
+      const ctx = c.getContext('2d');
+      const w = c.width;
+      const h = c.height;
+
+      ctx.clearRect(0, 0, w, h);
+
+      // Arena sand ground lines
+      ctx.strokeStyle = '#12251c';
+      ctx.lineWidth = 1;
+      for (let x = 0; x < w; x += 32) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0); ctx.lineTo(x, h);
+        ctx.stroke();
+      }
+
+      // Draw Player Serpent (Left, facing right)
+      if (playerFighter) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(0, 0, w * 0.48, h);
+        ctx.clip();
+        drawSerpentAnatomy(ctx, w * 0.48, h, playerFighter.data, { facingLeft: false, time: time, alwaysTongue: true });
+        ctx.restore();
+      }
+
+      // Draw Rival Serpent (Right, facing left)
+      if (rivalFighter) {
+        ctx.save();
+        ctx.translate(w * 0.52, 0);
+        ctx.beginPath();
+        ctx.rect(0, 0, w * 0.48, h);
+        ctx.clip();
+        drawSerpentAnatomy(ctx, w * 0.48, h, rivalFighter.data, { facingLeft: true, time: time + 1.2, alwaysTongue: true });
+        ctx.restore();
+      }
+
+      // Combat Floating Text
+      combatLogTexts.forEach(t => {
+        ctx.font = 'bold 16px ui-monospace, monospace';
+        ctx.fillStyle = t.col;
+        ctx.fillText(t.text, t.x * (w / 340), t.y);
+      });
+    }
+
+    // 14. 5-LANE PLAYER CONSIGNMENT AUCTION
+    const SYNDICATES = [
+      { name: "Blackfang Cartel", trait: "Venom potency focus" },
+      { name: "Royal Ophiological Society", trait: "Bids big on Grails" },
+      { name: "VenomLab BioTech", trait: "Apex tier collectors" },
+      { name: "Underground Pit Syndicate", trait: "Combat IV enthusiasts" },
+      { name: "Sultan's Menagerie", trait: "Bids heavily on rare morphs" }
+    ];
+
+    function openConsignModal() {
+      const sel = document.getElementById('consign-serpent-select');
+      sel.innerHTML = '';
+      State.roster.forEach(s => {
+        sel.innerHTML += `<option value="${s.id}">${s.name} (T${s.tier} — Val: $${calculateValuation(s)})</option>`;
+      });
+      openModal('modal-consign');
+    }
+
+    function submitConsignment() {
+      const snakeId = parseInt(document.getElementById('consign-serpent-select').value);
+      const reserve = parseInt(document.getElementById('consign-reserve-price').value) || 500;
+
+      const laneIdx = State.auctions.findIndex(a => a === null);
+      if (laneIdx === -1) {
+        showToast('All 5 consignment lanes are currently occupied!', 'crimson');
+        return;
+      }
+
+      const snakeIdx = State.roster.findIndex(s => s.id === snakeId);
+      if (snakeIdx === -1) return;
+      const snake = State.roster.splice(snakeIdx, 1)[0];
+
+      State.auctions[laneIdx] = {
+        lane: laneIdx,
+        snake: snake,
+        reserve: reserve,
+        currentBid: reserve,
+        highBidder: "Reserve Opening",
+        timeLeft: 35,
+        hype: snake.polished ? 1.3 : 1.0
+      };
+
+      SoundFX.gavel();
+      showToast(`Consigned ${snake.name} to Lane #${laneIdx + 1}!`, 'gold');
+      closeModal('modal-consign');
+      saveState();
+      renderAuctionLanes();
+    }
+
+    function renderAuctionLanes() {
+      const container = document.getElementById('auction-lanes-container');
+      container.innerHTML = '';
+
+      State.auctions.forEach((lane, idx) => {
+        const card = document.createElement('div');
+        card.className = `auction-lane-card ${lane ? 'active-lane' : ''}`;
+
+        if (!lane) {
+          card.innerHTML = `
+            <div style="display:flex; justify-content:space-between;">
+              <span class="mono" style="font-size:12px; color:var(--text-muted);">LANE #${idx + 1}</span>
+              <span class="badge" style="background:#13221b; color:var(--text-muted);">OPEN</span>
+            </div>
+            <div style="padding:28px 0; text-align:center; color:var(--text-muted); font-size:13px;">
+              Ready for Player Consignment
+            </div>
+            <button class="btn btn-sm btn-gold" onclick="openConsignModal()">+ Consign Serpent</button>
+          `;
+        } else {
+          card.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="mono" style="font-size:12px; color:var(--viper-gold);">LANE #${idx + 1}</span>
+              <span class="timer-pill ${lane.timeLeft <= 5 ? 'urgent' : ''}">${lane.timeLeft}s</span>
+            </div>
+            <div style="font-weight:700; font-size:14px; color:#fff;">${lane.snake.name}</div>
+            <div style="font-size:11px; color:var(--text-muted);">Tier ${lane.snake.tier} • Hype: ${Math.round(lane.hype * 100)}%</div>
+
+            <canvas class="serpent-canvas" id="canvas-auction-${idx}" style="height:60px; margin:4px 0;"></canvas>
+
+            <div style="background:#090f0c; border:1px solid #1a2d24; border-radius:6px; padding:8px; margin:4px 0;">
+              <div style="font-size:10px; color:var(--text-muted);">CURRENT HIGH BID:</div>
+              <div class="mono" style="font-size:18px; font-weight:800; color:var(--viper-gold);">$${lane.currentBid.toLocaleString()}</div>
+              <div style="font-size:11px; color:var(--venom-emerald);">Bidder: ${lane.highBidder}</div>
+            </div>
+
+            <button class="btn btn-sm btn-gold" onclick="applyAuctionPolish(${idx})">✨ Wax Polish (+30% Hype)</button>
+          `;
+        }
+        container.appendChild(card);
+
+        if (lane) {
+          setTimeout(() => {
+            const c = document.getElementById(`canvas-auction-${idx}`);
+            if (c) {
+              c.width = c.clientWidth * window.devicePixelRatio || 260;
+              c.height = c.clientHeight * window.devicePixelRatio || 60;
+              drawSerpentAnatomy(c.getContext('2d'), c.width, c.height, lane.snake);
+            }
+          }, 15);
+        }
+      });
+    }
+
+    function applyAuctionPolish(laneIdx) {
+      const lane = State.auctions[laneIdx];
+      if (!lane) return;
+      if (State.polish < 1) {
+        showToast('Out of serpent wax polish! Buy more in Logistics.', 'crimson');
+        return;
+      }
+      State.polish -= 1;
+      lane.hype += 0.3;
+      SoundFX.hiss();
+      showToast(`Lane #${laneIdx + 1} Hype boosted to ${Math.round(lane.hype * 100)}%!`, 'gold');
+      saveState();
+      renderAuctionLanes();
+    }
+
+    // 1-Second Auction Tick & Anti-Snipe
+    setInterval(() => {
+      let changed = false;
+      State.auctions.forEach((lane, idx) => {
+        if (!lane) return;
+        lane.timeLeft -= 1;
+        changed = true;
+
+        if (Math.random() < 0.35 && lane.timeLeft > 1) {
+          const syn = SYNDICATES[Math.floor(Math.random() * SYNDICATES.length)];
+          const raise = Math.round(lane.currentBid * (0.08 + Math.random() * 0.12) * lane.hype);
+          lane.currentBid += Math.max(50, raise);
+          lane.highBidder = syn.name;
+
+          if (lane.timeLeft <= 3) {
+            lane.timeLeft += 3;
+            showToast(`⚡ ANTI-SNIPE EXTENSION (+3s) on Lane #${idx + 1}!`, 'gold');
+          }
+        }
+
+        if (lane.timeLeft <= 0) {
+          SoundFX.gavel();
+          const fee = Math.round(lane.currentBid * 0.08);
+          const payout = lane.currentBid - fee;
+          State.cash += payout;
+          showToast(`🔨 SOLD! Lane #${idx + 1} hammered to ${lane.highBidder} for $${lane.currentBid.toLocaleString()}! (Payout: $${payout.toLocaleString()})`, 'gold');
+          State.auctions[idx] = null;
+        }
+      });
+
+      if (changed) {
+        renderAuctionLanes();
+        updateHeaderStats();
+      }
+    }, 1000);
+
+    // 15. DISTRESSED CLEARANCE TAB (3-6 LISTINGS WITH REALISTIC CONDITIONS)
+    let clearanceDeals = [];
+    let clearanceSecondsLeft = 10;
+
+    const DISTRESSED_CONDITIONS = [
+      "Mite survivor (recovering scales)",
+      "Impounded contraband seizure",
+      "Unknown wild-caught lineage",
+      "Asymmetry defect / rescue",
+      "Malnourished shelter intake",
+      "Quarantine customs clearance"
+    ];
+
+    function generateClearanceDeals() {
+      clearanceDeals = [];
+      const count = Math.floor(Math.random() * 4) + 3; // 3 to 6 listings!
+
+      for (let i = 0; i < count; i++) {
+        const tier = Math.floor(Math.random() * 6) + 1; // Tier 1-6
+        const reason = DISTRESSED_CONDITIONS[Math.floor(Math.random() * DISTRESSED_CONDITIONS.length)];
+        const roll = Math.random();
+
+        let custom = {
+          tier,
+          satiety: Math.floor(Math.random() * 30) + 10,
+          health: Math.floor(Math.random() * 40) + 25,
+          conditionReason: reason
+        };
+
+        if (roll < 0.25) {
+          custom.name = "Rescued Albino Cross";
+          custom.recessives = [{ id: 'albino', state: 'visual' }];
+        } else if (roll < 0.5) {
+          custom.name = "Contraband Pastel Clown";
+          custom.codoms = { pastel: 1, clown: 1 };
+        } else if (roll < 0.75) {
+          custom.name = "Seized Axanthic Lineage";
+          custom.recessives = [{ id: 'axanthic', state: 'het' }];
+        } else {
+          custom.name = "Distressed Mojave Brawler";
+          custom.codoms = { mojave: 1 };
+        }
+
+        const snake = createSerpent(custom);
+        const originalVal = calculateValuation(snake);
+        const discount = 0.70 + Math.random() * 0.22; // 70% to 92% deep discount
+        const price = Math.max(35, Math.round(originalVal * (1 - discount)));
+
+        clearanceDeals.push({
+          snake,
+          originalVal,
+          price,
+          discountPct: Math.round(discount * 100),
+          reason
+        });
+      }
+      updateHeaderStats();
+    }
+
+    function renderClearanceView() {
+      const grid = document.getElementById('clearance-deals-grid');
+      grid.innerHTML = '';
+
+      clearanceDeals.forEach((deal, idx) => {
+        const s = deal.snake;
+        const card = document.createElement('div');
+        card.className = 'clearance-card';
+
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="badge badge-crimson">${deal.discountPct}% OFF LIQUIDATION</span>
+            <span class="badge badge-tier">T${s.tier}</span>
+          </div>
+
+          <div style="font-weight:800; font-size:15px; color:#fff;">${s.name}</div>
+          <div style="font-size:11px; color:#f87171; font-weight:600;">⚠️ ${deal.reason}</div>
+
+          <canvas class="serpent-canvas" id="canvas-clearance-${idx}" style="height:65px;"></canvas>
+
+          <div style="background:#070d0a; border:1px solid #14221b; border-radius:6px; padding:8px;">
+            <div style="display:flex; justify-content:space-between; align-items:baseline;">
+              <span style="color:var(--text-muted); font-size:12px; text-decoration:line-through;">Retail: $${deal.originalVal.toLocaleString()}</span>
+              <span class="mono" style="color:var(--venom-emerald); font-weight:900; font-size:17px;">$${deal.price.toLocaleString()}</span>
+            </div>
+          </div>
+
+          <button class="btn btn-emerald" style="width:100%; margin-top:auto;" onclick="buyClearanceDeal(${idx})">
+            ⚡ RESCUE & SNAG ($${deal.price})
+          </button>
+        `;
+        grid.appendChild(card);
+
+        setTimeout(() => {
+          const c = document.getElementById(`canvas-clearance-${idx}`);
+          if (c) {
+            c.width = c.clientWidth * window.devicePixelRatio || 280;
+            c.height = c.clientHeight * window.devicePixelRatio || 65;
+            drawSerpentAnatomy(c.getContext('2d'), c.width, c.height, s);
+          }
+        }, 15);
+      });
+    }
+
+    function buyClearanceDeal(idx) {
+      const deal = clearanceDeals[idx];
+      if (!deal) return;
+      if (State.cash < deal.price) {
+        showToast('Insufficient cash to rescue this specimen!', 'crimson');
+        return;
+      }
+      State.cash -= deal.price;
+      State.roster.push(deal.snake);
+      clearanceDeals.splice(idx, 1);
+      SoundFX.cash();
+      showToast(`Rescued ${deal.snake.name}! Transferred to Roster Vault.`, 'gold');
+      saveState();
+      renderClearanceView();
+    }
+
+    // 10-Second Clearance Countdown Engine
+    setInterval(() => {
+      clearanceSecondsLeft -= 0.1;
+      const badge = document.getElementById('clearance-timer-badge');
+      if (badge) badge.textContent = `${Math.max(0, clearanceSecondsLeft).toFixed(1)}s`;
+
+      if (clearanceSecondsLeft <= 0) {
+        clearanceSecondsLeft = 10;
+        generateClearanceDeals();
+        renderClearanceView();
+      }
+    }, 100);
+
+    generateClearanceDeals();
+
+    // 16. GLOBAL MYSTERY TRADE (WONDER TRADE)
+    let radarSweepAngle = 0;
+    let radarActive = false;
+
+    function renderWonderTradeView() {
+      const sel = document.getElementById('wondertrade-select');
+      sel.innerHTML = '<option value="">-- Choose Serpent to Deposit --</option>';
+      State.roster.forEach(s => {
+        sel.innerHTML += `<option value="${s.id}">${s.name} (T${s.tier})</option>`;
+      });
+      drawRadar();
+    }
+
+    function drawRadar() {
+      const c = document.getElementById('radar-canvas');
+      if (!c) return;
+      const ctx = c.getContext('2d');
+      const w = c.width;
+      const h = c.height;
+
+      ctx.clearRect(0, 0, w, h);
+
+      ctx.strokeStyle = '#10b98133';
+      ctx.lineWidth = 1;
+      [30, 60, 85].forEach(r => {
+        ctx.beginPath();
+        ctx.arc(w / 2, h / 2, r, 0, Math.PI * 2);
+        ctx.stroke();
+      });
+
+      ctx.beginPath();
+      ctx.moveTo(w / 2, 0); ctx.lineTo(w / 2, h);
+      ctx.moveTo(0, h / 2); ctx.lineTo(w, h / 2);
+      ctx.stroke();
+
+      if (radarActive) {
+        radarSweepAngle += 0.08;
+        ctx.save();
+        ctx.translate(w / 2, h / 2);
+        ctx.rotate(radarSweepAngle);
+
+        const grad = ctx.createRadialGradient(0, 0, 5, 0, 0, 90);
+        grad.addColorStop(0, 'rgba(16, 185, 129, 0.45)');
+        grad.addColorStop(1, 'rgba(16, 185, 129, 0)');
+
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.arc(0, 0, 88, 0, 0.5);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.restore();
+      }
+    }
+
+    function executeWonderTrade() {
+      const sel = document.getElementById('wondertrade-select');
+      const snakeId = parseInt(sel.value);
+      if (!snakeId) {
+        showToast('Please select a serpent to deposit!', 'crimson');
+        return;
+      }
+
+      const idx = State.roster.findIndex(s => s.id === snakeId);
+      if (idx === -1) return;
+      const deposited = State.roster.splice(idx, 1)[0];
+
+      radarActive = true;
+      document.getElementById('btn-execute-wondertrade').disabled = true;
+      document.getElementById('radar-status-text').textContent = 'BROKER SCANNING OVERSEAS SATELLITES...';
+
+      let frames = 0;
+      function sweep() {
+        drawRadar();
+        frames++;
+        if (frames < 90) {
+          requestAnimationFrame(sweep);
+        } else {
+          finishWonderTrade(deposited);
+        }
+      }
+      sweep();
+    }
+
+    function finishWonderTrade(deposited) {
+      radarActive = false;
+      document.getElementById('btn-execute-wondertrade').disabled = false;
+      document.getElementById('radar-status-text').textContent = 'EXCHANGE COMPLETE // MATCH CONFIRMED';
+
+      const regions = ["[TH] Bangkok", "[AU] Outback", "[BR] Amazonia", "[EG] Cairo", "[JP] Tokyo"];
+      const origin = regions[Math.floor(Math.random() * regions.length)];
+
+      const isJackpot = Math.random() < 0.08;
+      let newTier = Math.min(10, Math.max(1, deposited.tier + (Math.floor(Math.random() * 3) - 1)));
+      if (isJackpot) newTier = Math.min(10, Math.max(8, newTier + 3));
+
+      let custom = {
+        tier: newTier,
+        origin: origin,
+        ivs: {
+          vp: Math.floor(Math.random() * 45) + (isJackpot ? 50 : 35),
+          ss: Math.floor(Math.random() * 45) + (isJackpot ? 50 : 35),
+          sd: Math.floor(Math.random() * 45) + (isJackpot ? 50 : 35),
+          cp: Math.floor(Math.random() * 45) + (isJackpot ? 50 : 35),
+          ra: Math.floor(Math.random() * 45) + (isJackpot ? 50 : 35)
+        }
+      };
+
+      if (isJackpot) {
+        custom.name = "Overseas Jackpot Sovereign";
+        custom.codoms = { pastel: 2, mojave: 1 };
+        SoundFX.fanfare();
+        showToast(`🌟 8% JACKPOT ROLL! Received ${custom.name} from ${origin}!`, 'gold');
+      } else {
+        SoundFX.cash();
+        showToast(`Received incoming transfer from ${origin}!`, 'emerald');
+      }
+
+      const received = createSerpent(custom);
+      State.roster.push(received);
+      saveState();
+      renderWonderTradeView();
+    }
+
+    // 17. LOGISTICS & CONDITIONING
+    function advanceDays(count = 1) {
+      for (let c = 0; c < count; c++) {
+        State.day += 1;
+        const snakesCount = State.roster.length;
+        const foodNeeded = snakesCount;
+        const wagesNeeded = snakesCount * 10;
+
+        if (State.food >= foodNeeded) {
+          State.food -= foodNeeded;
+        } else {
+          State.roster.forEach(s => {
+            s.satiety = Math.max(0, s.satiety - 25);
+            s.health = Math.max(10, s.health - 15);
+          });
+          showToast(`⚠️ Rations depleted! Serpents are starving.`, 'crimson');
+        }
+
+        State.cash = Math.max(0, State.cash - wagesNeeded);
+
+        State.roster.forEach(s => {
+          s.energy = Math.min(100, s.energy + 30);
+        });
+
+        State.incubators.forEach((slot, idx) => {
+          if (!slot) return;
+          slot.daysRemaining -= 1;
+          if (slot.daysRemaining <= 0) {
+            const baby = slot.embryo;
+            State.roster.push(baby);
+            State.incubators[idx] = null;
+            SoundFX.fanfare();
+            showToast(`🐣 Chamber #${idx + 1} Hatched: ${baby.name} (T${baby.tier})!`, 'gold');
+            checkGrailDiscovery(baby);
+          }
+        });
+      }
+
+      SoundFX.alert();
+      showToast(`Advanced calendar by +${count} day(s). Day is now ${State.day}.`, 'info');
+      saveState();
+      updateHeaderStats();
+      if (document.getElementById('view-vault').classList.contains('active')) renderRoster();
+      if (document.getElementById('view-breeding').classList.contains('active')) renderBreedingView();
+    }
+
+    function buySupplies(type, qty, cost) {
+      if (State.cash < cost) {
+        showToast('Insufficient funds!', 'crimson');
+        return;
+      }
+      State.cash -= cost;
+      if (type === 'food') State.food += qty;
+      if (type === 'meds') State.meds += qty;
+      if (type === 'polish') State.polish += qty;
+
+      SoundFX.cash();
+      showToast(`Purchased +${qty} ${type}!`, 'gold');
+      saveState();
+    }
+
+    function trainSerpent(statKey) {
+      const sel = document.getElementById('training-serpent-select');
+      const snakeId = parseInt(sel.value);
+      if (!snakeId) {
+        showToast('Select a trainee serpent first!', 'crimson');
+        return;
+      }
+      const snake = State.roster.find(s => s.id === snakeId);
+      if (!snake) return;
+
+      if (snake.energy < 20 || snake.satiety < 15) {
+        showToast('Serpent is too fatigued or hungry to drill!', 'crimson');
+        return;
+      }
+
+      snake.energy -= 20;
+      snake.satiety -= 15;
+      const gain = Math.floor(Math.random() * 3) + 2;
+      snake.ivs[statKey] = Math.min(100, snake.ivs[statKey] + gain);
+
+      SoundFX.strike();
+      showToast(`Drilled ${snake.name}! ${statKey.toUpperCase()} boosted by +${gain} IV!`, 'emerald');
+      saveState();
+      renderRoster();
+    }
+
+    // 18. WORLD'S FIRST GRAIL CELEBRATION
+    let pendingGrailSnake = null;
+    function checkGrailDiscovery(snake) {
+      GRAILS.forEach(g => {
+        if (g.check(snake) && !State.discoveredGrails.includes(g.id)) {
+          pendingGrailSnake = snake;
+          document.getElementById('grail-combo-name').textContent = g.name.toUpperCase();
+          document.getElementById('grail-bounty-val').textContent = `$${g.bounty.toLocaleString()}`;
+          openModal('modal-grail');
+        }
+      });
+    }
+
+    function confirmGrailDiscovery() {
+      if (!pendingGrailSnake) return;
+      const customName = document.getElementById('grail-specimen-name').value;
+      if (customName) pendingGrailSnake.name = customName;
+
+      GRAILS.forEach(g => {
+        if (g.check(pendingGrailSnake) && !State.discoveredGrails.includes(g.id)) {
+          State.discoveredGrails.push(g.id);
+          State.cash += g.bounty;
+          SoundFX.fanfare();
+          showToast(`🌟 HISTORIC DISCOVERY: Sealed ${g.name} into Codex! +$${g.bounty.toLocaleString()} bounty grant!`, 'gold');
+        }
+      });
+
+      closeModal('modal-grail');
+      saveState();
+      renderRoster();
+    }
+
+    // 19. CODEX VIEW
+    function renderCodex() {
+      const gContainer = document.getElementById('codex-grails-list');
+      gContainer.innerHTML = '';
+
+      GRAILS.forEach(g => {
+        const discovered = State.discoveredGrails.includes(g.id);
+        const row = document.createElement('div');
+        row.className = 'codex-row';
+        row.innerHTML = `
+          <div>
+            <div style="font-weight:700; color:${discovered ? 'var(--viper-gold)' : 'var(--text-muted)'};">
+              ${discovered ? '👑 ' : '🔒 '}${g.name}
+            </div>
+            <div style="font-size:11px; color:var(--text-secondary);">${g.reqText}</div>
+          </div>
+          <div>
+            ${discovered ? '<span class="badge badge-grail">DISCOVERED</span>' : '<span class="badge" style="background:#1a2820; color:var(--text-muted);">$50k Bounty</span>'}
+          </div>
+        `;
+        gContainer.appendChild(row);
+      });
+
+      const tContainer = document.getElementById('codex-tiers-list');
+      tContainer.innerHTML = '';
+      Object.keys(TIERS).forEach(k => {
+        const t = TIERS[k];
+        const row = document.createElement('div');
+        row.className = 'codex-row';
+        row.innerHTML = `
+          <div>
+            <div style="font-weight:700; color:${t.ground};">Tier ${k}: ${t.name}</div>
+            <div style="font-size:11px; color:var(--text-secondary);">Strike: ${t.weapon} | HP: ${t.hp} | Atk: ${t.atk}</div>
+          </div>
+          <div class="mono" style="color:var(--viper-gold); font-size:12px;">Base $${t.baseVal.toLocaleString()}</div>
+        `;
+        tContainer.appendChild(row);
+      });
+    }
+
+    // 20. GOD MODE DEVELOPER CHEATS
+    function toggleDevConsole() {
+      document.getElementById('dev-console-drawer').classList.toggle('open');
+    }
+
+    function cheatCash(amt) {
+      State.cash += amt;
+      SoundFX.cash();
+      showToast(`Dev cash: +$${amt.toLocaleString()}`, 'gold');
+      saveState();
+    }
+
+    function cheatBroke() {
+      State.cash = 50;
+      showToast('Broke mode activated ($50)', 'crimson');
+      saveState();
+    }
+
+    function cheatSupplies(f, m, p) {
+      State.food += f;
+      State.meds += m;
+      State.polish += p;
+      showToast(`Dev supplies: +${f} Rations, +${m} Med, +${p} Polish`, 'emerald');
+      saveState();
+    }
+
+    function cheatMatureAll() {
+      let count = 0;
+      State.incubators.forEach((slot, idx) => {
+        if (!slot) return;
+        slot.daysRemaining = 0;
+        const baby = slot.embryo;
+        State.roster.push(baby);
+        State.incubators[idx] = null;
+        count++;
+        checkGrailDiscovery(baby);
+      });
+      SoundFX.fanfare();
+      showToast(`Instant matured ${count} clutches!`, 'gold');
+      saveState();
+      renderBreedingView();
+      renderRoster();
+    }
+
+    function cheatSpawnTierX() {
+      const s = createSerpent({
+        name: "Leviathan Sovereign",
+        tier: 10,
+        codoms: { pastel: 2, clown: 2 },
+        recessives: [{ id: 'albino', state: 'visual' }],
+        ivs: { vp: 100, ss: 100, sd: 100, cp: 100, ra: 100 }
+      });
+      State.roster.push(s);
+      SoundFX.fanfare();
+      showToast('Spawned Apex Tier X Leviathan with SSS+ IVs!', 'gold');
+      saveState();
+      renderRoster();
+    }
+
+    function cheatSpawnGrail() {
+      const s = createSerpent({
+        name: "Solaris Blizzard Sovereign",
+        tier: 8,
+        codoms: { pastel: 2 },
+        recessives: [{ id: 'albino', state: 'visual' }, { id: 'sunset', state: 'visual' }],
+        ivs: { vp: 96, ss: 98, sd: 94, cp: 92, ra: 99 }
+      });
+      State.roster.push(s);
+      checkGrailDiscovery(s);
+      saveState();
+      renderRoster();
+    }
+
+    function cheatMaxAllIVs() {
+      State.roster.forEach(s => {
+        s.ivs = { vp: 100, ss: 100, sd: 100, cp: 100, ra: 100 };
+      });
+      SoundFX.fanfare();
+      showToast('All roster serpent IVs maxed to SSS+ (100)!', 'gold');
+      saveState();
+      renderRoster();
+    }
+
+    function toggleGodArena() {
+      State.godArena = !State.godArena;
+      document.getElementById('dev-god-arena').textContent = State.godArena ? 'ON' : 'OFF';
+      showToast(`Arena God Mode: ${State.godArena ? 'INVINCIBLE' : 'OFF'}`, 'gold');
+    }
+
+    function factoryReset() {
+      localStorage.removeItem(STORAGE_KEY);
+      initStarterState();
+      showToast('Syndicate factory reset complete.', 'crimson');
+      location.reload();
+    }
+
+    // 21. JSON PERSISTENCE & BACKUP
+    function openBackupModal() {
+      document.getElementById('backup-json-area').value = JSON.stringify(State, null, 2);
+      openModal('modal-backup');
+    }
+
+    function copyBackupToClipboard() {
+      const area = document.getElementById('backup-json-area');
+      area.select();
+      area.setSelectionRange(0, 99999);
+      try {
+        document.execCommand('copy');
+        showToast('JSON Backup copied to clipboard!', 'emerald');
+      } catch (err) {
+        showToast('Manual copy required', 'info');
+      }
+    }
+
+    function importBackupJson() {
+      const area = document.getElementById('backup-json-area');
+      try {
+        const parsed = JSON.parse(area.value);
+        if (parsed.roster && Array.isArray(parsed.roster)) {
+          State = parsed;
+          saveState();
+          closeModal('modal-backup');
+          showToast('Save restored successfully!', 'gold');
+          renderRoster();
+          updateHeaderStats();
+        } else {
+          showToast('Invalid JSON schema!', 'crimson');
+        }
+      } catch (e) {
+        showToast('JSON parse error: Malformed string', 'crimson');
+      }
+    }
+
+    // MODAL UTILITIES
+    function openModal(id) { document.getElementById(id).classList.add('active'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+    // INITIALIZATION
+    window.onload = function() {
+      loadState();
+      updateHeaderStats();
+      renderRoster();
+      renderCodex();
+
+      const trainSel = document.getElementById('training-serpent-select');
+      State.roster.forEach(s => {
+        trainSel.innerHTML += `<option value="${s.id}">${s.name}</option>`;
+      });
+
+      window.addEventListener('resize', () => {
+        if (document.getElementById('view-arena').classList.contains('active')) {
+          initArenaCanvas();
+        }
+      });
+    };
+  </script>
+</body>
+</html>
